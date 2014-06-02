@@ -1,0 +1,31 @@
+				MVN-GUI
+				
+				Introduction:
+	It is a simple java desktop application for help and make easier project creation, building 
+	and managing. So it is a first version of this open sources product and if somebody has 
+	any proposition or recommendation then please contact me and I will implement better of 
+	them in next version. I hope that this software find people who need it but any way I 
+	have created it for my self and my requirements.
+				Help:
+	Tab 1 :
+	In the left side you can see projects list table where you can add new project or remove
+	old project. 
+	Also there you can see project status :
+	1. Blue point - Project available and ready;
+	2. Yellow point - Project available but busy (some command still executing);
+	3. Gray point - Project unavailable (removed or not contain MAVEN pom.xml file);
+	4. Red point - Some command crashed in this project;
+	When you click in some project name you will see work panel where you can:
+	1. Open project folder (click on icon near project name);
+	2. Run some default MAVEN command in project folder;
+	3.Run custom MAVEN command in project folder.
+	
+	TAB 2 :
+	In this tab you can setup and generate new MAVEN project. Just select folder which 
+	will save new project and fill project name and package path fields. Also
+	select on of default MAVEN archetype or select "custom" and fill your archetype.
+	
+	TAB 3 :
+	Here you need setup MAVEN home folder. Just download MAVEN and extract into some
+	folder, then select MAVEN folder and press "Save".
+				
