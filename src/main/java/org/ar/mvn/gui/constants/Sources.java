@@ -32,6 +32,8 @@ public interface Sources {
       .getResource("error.png"));
   ImageIcon FOLDER_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
       .getResource("folder.png"));
+  ImageIcon EDIT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("edit.png"));
 
   ImageIcon FILES_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
       .getResource("files.png"));

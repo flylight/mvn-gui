@@ -248,6 +248,19 @@ public class ProjectPanel extends JPanel {
     });
     header.add(openInFolder);
     //
+    JLabel editPomFile = new JLabel(Sources.EDIT_IMAGE);
+    editPomFile.setPreferredSize(new Dimension(24, 24));
+    editPomFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    editPomFile.addMouseListener(new LabelMouseOverListener(editPomFile));
+    editPomFile.addMouseListener(new LabelMouseClickListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        OSUtil.openInOSFileManager(currentProject.getPath() + Sources.SYS_FILE_SEPARATOR
+            + "pom.xml");
+      }
+    });
+    header.add(editPomFile);
+    //
     add(header, BorderLayout.NORTH);
   }
 }

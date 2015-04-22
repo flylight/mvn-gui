@@ -145,6 +145,7 @@ public class AddNewProjectWindow extends JDialog {
       String folderName = path.substring(path.lastIndexOf(Sources.SYS_FILE_SEPARATOR) + 1);
       projectName.setText(folderName);
       projectPath.setText(path);
+      projectPath.requestFocus();
       projectName.requestFocus();
     }
   }
