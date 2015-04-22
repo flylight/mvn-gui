@@ -24,6 +24,8 @@ import org.ar.mvn.gui.utils.VerificationUtil;
 public class AddNewProjectWindow extends JDialog {
   private static final long serialVersionUID = 1L;
 
+  private static final String SYS_FILE_SEPARATOR = System.getProperty("file.separator");
+
   private JTextField projectPath;
   private JTextField projectName;
 
@@ -144,6 +146,8 @@ public class AddNewProjectWindow extends JDialog {
   private void showPathChooser() {
     String path = OSUtil.showPathChooser("Select maven project folder", this);
     if (!path.isEmpty()) {
+      String folderName = path.substring(path.lastIndexOf(SYS_FILE_SEPARATOR) + 1);
+      projectName.setText(folderName);
       projectPath.setText(path);
       projectPath.updateUI();
     }
