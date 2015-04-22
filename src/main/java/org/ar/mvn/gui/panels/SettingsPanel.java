@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.entity.Settings;
 import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
@@ -37,8 +38,6 @@ public class SettingsPanel extends JPanel {
     //
   }
 
-  // TODO refresh settings each hoe this panel
-
   private void loadSettings() {
     ApplicationStateManager.INSTANCE().loadSettings();
     mavenHome.setText(ApplicationStateManager.INSTANCE().getSettings().getMavenHome());
@@ -57,7 +56,7 @@ public class SettingsPanel extends JPanel {
     c.gridy = 0;
     c.gridx = 0;
     //
-    settings.add(new JLabel("Select maven home folder : "), c);
+    settings.add(new JLabel(Text.SELECT_MAVEN_HOME_FOLDER), c);
     //
     c.gridx = 1;
     //
@@ -67,14 +66,15 @@ public class SettingsPanel extends JPanel {
     //
     c.gridx = 2;
     //
-    JButton selectMavenFolderBtn = new JButton("...");
+    JButton selectMavenFolderBtn = new JButton(Text.EXTRA);
     selectMavenFolderBtn.setPreferredSize(new Dimension(50, 20));
     selectMavenFolderBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        String path = OSUtil.showPathChooser("Select maven home folder", SettingsPanel.this);
+        String path = OSUtil.showPathChooser(Text.SELECT_MAVEN_HOME_FOLDER2, SettingsPanel.this);
         if (!path.isEmpty()) {
           mavenHome.setText(path);
+          mavenHome.requestFocus();
         }
       }
     });
@@ -90,7 +90,7 @@ public class SettingsPanel extends JPanel {
     JPanel control = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     control.setBackground(Color.GRAY);
 
-    JButton save = new JButton("Save");
+    JButton save = new JButton(Text.SAVE);
     save.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -98,10 +98,10 @@ public class SettingsPanel extends JPanel {
           Settings s = new Settings();
           s.setMavenHome(mavenHome.getText());
           if (ApplicationStateManager.INSTANCE().saveSettings(s)) {
-            DialogMessagesUtil.showInformationMessage(SettingsPanel.this, "Settings saved!");
+            DialogMessagesUtil.showInformationMessage(SettingsPanel.this, Text.SETTINGS_SAVED);
           } else {
             DialogMessagesUtil.showErrorMessage(SettingsPanel.this,
-                "Error happen when save settings!");
+                Text.ERROR_HAPPEN_WHEN_SAVE_SETTINGS);
           }
         }
       }
@@ -116,10 +116,10 @@ public class SettingsPanel extends JPanel {
       if (VerificationUtil.checkMavenHome(mavenHome.getText())) {
         return true;
       } else {
-        DialogMessagesUtil.showErrorMessage(this, "This folder do not contains maven!");
+        DialogMessagesUtil.showErrorMessage(this, Text.THIS_FOLDER_DO_NOT_CONTAINS_MAVEN);
       }
     } else {
-      DialogMessagesUtil.showErrorMessage(this, "Maven home folder can not be empty!");
+      DialogMessagesUtil.showErrorMessage(this, Text.MAVEN_HOME_FOLDER_CAN_NOT_BE_EMPTY);
     }
     return false;
   }

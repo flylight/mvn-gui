@@ -6,12 +6,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.ar.mvn.gui.ApplciationInitializer;
 import org.ar.mvn.gui.constants.PanelSources;
+import org.ar.mvn.gui.constants.Sources;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
 import org.ar.mvn.gui.listeners.LabelMouseOverListener;
 
@@ -28,22 +28,10 @@ public class NavigationMenuPanel extends JPanel {
   }
 
   private void initializeUI() {
-    //
-    ImageIcon filesImage =
-        new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("files.png"));
-    final JLabel manage = new JLabel(filesImage);
-    //
-    ImageIcon newProjectImage =
-        new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("new.png"));
-    JLabel newProject = new JLabel(newProjectImage);
-    //
-    ImageIcon settingsImage =
-        new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("settings.png"));
-    JLabel settings = new JLabel(settingsImage);
-    //
-    ImageIcon helpImage =
-        new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("help.png"));
-    JLabel help = new JLabel(helpImage);
+    JLabel manage = new JLabel(Sources.FILES_IMAGE);
+    JLabel newProject = new JLabel(Sources.NEW_PROJ_IMAGE);
+    JLabel settings = new JLabel(Sources.SETTINGS_IMAGE);
+    JLabel help = new JLabel(Sources.HELP_IMAGE);
     //
     manage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     newProject.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

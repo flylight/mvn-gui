@@ -12,6 +12,8 @@ public interface Sources {
   Dimension BOTTOM_PANEL_SIZE = new Dimension(0, 30);
   String INTRO = "Powered by Rymar Andriy (2013)";
 
+  String SYS_FILE_SEPARATOR = System.getProperty("file.separator");
+
   ImageIcon UNAVAILABLE_PROJECT_IMAGE = new ImageIcon(Thread.currentThread()
       .getContextClassLoader().getResource("unavailable.png"));
   ImageIcon AVAILABLE_PROJECT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
@@ -30,4 +32,13 @@ public interface Sources {
       .getResource("error.png"));
   ImageIcon FOLDER_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
       .getResource("folder.png"));
+
+  ImageIcon FILES_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("files.png"));
+  ImageIcon NEW_PROJ_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("new.png"));
+  ImageIcon SETTINGS_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("settings.png"));
+  ImageIcon HELP_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("help.png"));
 }

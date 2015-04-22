@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import org.ar.mvn.gui.constants.PanelSources;
 import org.ar.mvn.gui.constants.Sources;
 import org.ar.mvn.gui.panels.NavigationMenuPanel;
+import org.ar.mvn.gui.utils.UpdateUI;
 
 import com.apple.eawt.Application;
 
@@ -94,7 +95,7 @@ public class GeneralFrame extends JFrame {
   public void addToCenter(JPanel panel) {
     center.removeAll();
     center.add(panel, BorderLayout.CENTER);
-    center.updateUI();
+    UpdateUI.update(center);
   }
 
   public JPanel getTop() {

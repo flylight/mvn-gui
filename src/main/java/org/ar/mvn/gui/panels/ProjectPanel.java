@@ -24,6 +24,7 @@ import javax.swing.text.DefaultCaret;
 
 import org.ar.mvn.gui.constants.PanelSources;
 import org.ar.mvn.gui.constants.Sources;
+import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.ITaskExecutorListener;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
@@ -31,9 +32,14 @@ import org.ar.mvn.gui.listeners.LabelMouseOverListener;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
 import org.ar.mvn.gui.utils.OSUtil;
+import org.ar.mvn.gui.utils.UpdateUI;
 
 public class ProjectPanel extends JPanel {
-  private static final String EMPTY = "";
+  private static final String COMPILE_CMD = "compile";
+  private static final String CLEAN_INSTALL_CMD = "clean install";
+  private static final String INSTALL_CMD = "install";
+  private static final String CLEAN_CMD = "clean";
+  private static final String DSKIP_TESTS = " -DskipTests";
   private static final String COMMAND_PREFIX = "-> ";
   private static final String NEW_LINE = "\n";
   private static final long serialVersionUID = 1L;
@@ -56,7 +62,7 @@ public class ProjectPanel extends JPanel {
     buildPanelHeader();
     buildPanelBody();
     //
-    updateUI();
+    UpdateUI.update(this);
     return this;
   }
 
@@ -73,7 +79,7 @@ public class ProjectPanel extends JPanel {
     commandLinePanel.setPreferredSize(new Dimension(0, 35));
     commandLinePanel.setBackground(Color.GRAY);
     // label
-    commandLinePanel.add(new JLabel("mvn : "));
+    commandLinePanel.add(new JLabel(Text.MVN_LB));
     // manual command line
     commandLine = new JTextField();
     commandLine.addKeyListener(new KeyListener() {
@@ -100,7 +106,7 @@ public class ProjectPanel extends JPanel {
     commandLine.setPreferredSize(new Dimension(400, 25));
     commandLinePanel.add(commandLine);
 
-    JButton executeCommand = new JButton("Execute");
+    JButton executeCommand = new JButton(Text.EXECUTE);
     executeCommand.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -116,12 +122,12 @@ public class ProjectPanel extends JPanel {
 
   private void executeCommand(String command) {
     if (command != null && !command.isEmpty()) {
-      command += (skipTests.isSelected() ? " -DskipTests" : "");
+      command += (skipTests.isSelected() ? DSKIP_TESTS : Text.EMPTY);
       if (currentProject.getStatus() != Project.STATUS_BUSY) {
         //
         currentProject.getConsoleLog().append(COMMAND_PREFIX + command);
         currentProject.getConsoleLog().append(NEW_LINE);
-        commandLine.setText(EMPTY);
+        commandLine.setText(Text.EMPTY);
         refreshConsole();
         //
         currentProject.setStatus(Project.STATUS_BUSY);
@@ -143,7 +149,7 @@ public class ProjectPanel extends JPanel {
         });
       } else {
         DialogMessagesUtil.showWarningMessage(this,
-            "Project is busy! Wait while other operation was finished!");
+            Text.PROJECT_IS_BUSY_WAIT_WHILE_OTHER_OPERATION_WAS_FINISHED);
       }
     }
   }
@@ -176,43 +182,43 @@ public class ProjectPanel extends JPanel {
     JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
     actionPanel.setBackground(Color.GRAY);
 
-    JButton clean = new JButton("Clean");
+    JButton clean = new JButton(Text.CLEAN);
     clean.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        executeCommand("clean");
+        executeCommand(CLEAN_CMD);
       }
     });
     actionPanel.add(clean);
 
-    JButton install = new JButton("Install");
+    JButton install = new JButton(Text.INSTALL);
     install.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        executeCommand("install");
+        executeCommand(INSTALL_CMD);
       }
     });
     actionPanel.add(install);
 
-    JButton cleanInstall = new JButton("Clean&Install");
+    JButton cleanInstall = new JButton(Text.CLEAN_INSTALL);
     cleanInstall.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        executeCommand("clean install");
+        executeCommand(CLEAN_INSTALL_CMD);
       }
     });
     actionPanel.add(cleanInstall);
 
-    JButton compile = new JButton("Compile");
+    JButton compile = new JButton(Text.COMPILE);
     compile.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        executeCommand("compile");
+        executeCommand(COMPILE_CMD);
       }
     });
     actionPanel.add(compile);
 
-    skipTests = new JCheckBox("Skip tests");
+    skipTests = new JCheckBox(Text.SKIP_TESTS);
 
     actionPanel.add(skipTests);
 

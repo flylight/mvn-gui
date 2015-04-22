@@ -18,11 +18,13 @@ import javax.swing.JScrollPane;
 
 import org.ar.mvn.gui.constants.PanelSources;
 import org.ar.mvn.gui.constants.Sources;
+import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
 import org.ar.mvn.gui.listeners.LabelMouseOverListener;
 import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
+import org.ar.mvn.gui.utils.UpdateUI;
 
 public class DesktopPanel extends JPanel {
 
@@ -108,7 +110,7 @@ public class DesktopPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
           if (project.getStatus() == Project.STATUS_UNAVAILABLE) {
             DialogMessagesUtil.showErrorMessage(DesktopPanel.this,
-                "This project is unavailable! Maybe it was moved or deleted!");
+                Text.THIS_PROJECT_IS_UNAVAILABLE_MAYBE_IT_WAS_MOVED_OR_DELETED);
           } else {
             // find selected and deselect
             for (Project p : ApplicationStateManager.INSTANCE().getProjectsList()) {
@@ -144,8 +146,7 @@ public class DesktopPanel extends JPanel {
       gridY++;
     }
 
-
-    projectTableDataPanel.updateUI();
+    UpdateUI.update(projectTableDataPanel);
   }
 
   private JPanel getProjectTableHeaderPanel() {
@@ -167,7 +168,7 @@ public class DesktopPanel extends JPanel {
       }
     });
     //
-    JLabel projectListLabel = new JLabel("Projects : ");
+    JLabel projectListLabel = new JLabel(Text.PROJECTS);
     projectListLabel.setFont(new Font("arial", Font.BOLD, 15));
     projectListLabel.setForeground(Color.WHITE);
     projectListLabel.setPreferredSize(new Dimension(200, 35));
@@ -189,14 +190,12 @@ public class DesktopPanel extends JPanel {
     p.setPath(path);
     p.setStatus(Project.STATUS_AVAILABLE);
     ApplicationStateManager.INSTANCE().addToProjectsList(p);
-    // TODO write to DB
     refreshProjectTable();
   }
 
   private void deleteProject(Project project) {
-    if (DialogMessagesUtil.confirmationWindow(this, "Are you sure want to delete this project?")) {
+    if (DialogMessagesUtil.confirmationWindow(this, Text.ARE_YOU_SURE_WANT_TO_DELETE_THIS_PROJECT)) {
       ApplicationStateManager.INSTANCE().removeFromProjectList(project);
-      // TODO delete from DB
       refreshProjectTable();
     }
   }
@@ -204,6 +203,6 @@ public class DesktopPanel extends JPanel {
   private void addToCenterPanel(JPanel panel) {
     centerPanel.removeAll();
     centerPanel.add(panel, BorderLayout.CENTER);
-    centerPanel.updateUI();
+    UpdateUI.update(centerPanel);
   }
 }
