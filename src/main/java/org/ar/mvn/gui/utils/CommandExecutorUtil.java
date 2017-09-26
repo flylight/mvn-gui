@@ -111,6 +111,15 @@ public final class CommandExecutorUtil {
   }
 
   private static String generateMavenLocation() {
-    return ApplicationStateManager.INSTANCE().getSettings().getMavenHome() + "/bin/mvn";
+    String mavenExecutable = getMavenExecutable();
+    return ApplicationStateManager.INSTANCE().getSettings().getMavenHome() + "/bin/" + mavenExecutable;
+  }
+
+  static String getMavenExecutable() {
+    String osName = System.getProperty("os.name").toLowerCase();
+    if (osName.contains("win")) {
+      return "mvn.cmd";
+    }
+    return "mvn";
   }
 }

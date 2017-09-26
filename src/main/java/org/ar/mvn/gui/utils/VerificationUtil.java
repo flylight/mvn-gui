@@ -39,7 +39,7 @@ public final class VerificationUtil {
 
   public static boolean checkMavenHome(String path) {
     try {
-      File mvn = new File(path + "/bin", "mvn");
+      File mvn = new File(path + "/bin", CommandExecutorUtil.getMavenExecutable());
       return mvn.exists();
     } catch (Exception e) {
       // TODO logger
