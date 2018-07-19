@@ -11,19 +11,13 @@ With this applciation you can easy and in the same place do :
  
  General view : 
 
-![Work with project](http://s21.postimg.org/48rxhd0kn/project.png)
+![Work with project](https://ibb.co/dncJ3d)
 
 Here you can see how application looks in action. 
 
-Create new project : 
+Build project : 
 
-![Create new project](http://s12.postimg.org/w527l73kd/new.png)
+![Builing project in progress](https://ibb.co/frPvGy)
 
-Here you can see how application looks when user try to generate new project.
-
-Configure Apache Maven Home : 
-
-![Configure MVN home](http://s8.postimg.org/krins2xqd/conf.png)
-
-To use application you should select folder with your Apache Maven tool.
+![project is built](https://ibb.co/eTFVid)
  
