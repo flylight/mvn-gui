@@ -11,13 +11,13 @@ With this applciation you can easy and in the same place do :
  
  General view : 
 
-![Work with project](https://ibb.co/dncJ3d)
+![Work with project](https://image.ibb.co/iZrd3d/2018_07_19_16_40_05.png)
 
 Here you can see how application looks in action. 
 
 Build project : 
 
-![Builing project in progress](https://ibb.co/frPvGy)
+![Builing project in progress](https://image.ibb.co/dweUby/2018_07_19_16_41_14.png)
 
-![project is built](https://ibb.co/eTFVid)
+![project is built](https://image.ibb.co/bO4O3d/2018_07_19_16_41_25.png)
  
