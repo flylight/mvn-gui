@@ -15,32 +15,32 @@ public interface Sources {
   String SYS_FILE_SEPARATOR = System.getProperty("file.separator");
 
   ImageIcon UNAVAILABLE_PROJECT_IMAGE = new ImageIcon(Thread.currentThread()
-      .getContextClassLoader().getResource("unavailable.png"));
+      .getContextClassLoader().getResource("img/unavailable.png"));
   ImageIcon AVAILABLE_PROJECT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("available.png"));
+      .getResource("img/available.png"));
   ImageIcon BUSY_PROJECT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("busy.png"));
+      .getResource("img/busy.png"));
   ImageIcon DELETE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("delete.png"));
+      .getResource("img/delete.png"));
   ImageIcon ADD_BIG_IMANE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("add-big.png"));
+      .getResource("img/add-big.png"));
   ImageIcon ADD_SMALL_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("add-small.png"));
+      .getResource("img/add-small.png"));
   ImageIcon APPLICATION_ICON = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("icon.png"));
+      .getResource("img/icon.png"));
   ImageIcon ERROR_PROJECT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("error.png"));
+      .getResource("img/error.png"));
   ImageIcon FOLDER_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("folder.png"));
+      .getResource("img/folder.png"));
   ImageIcon EDIT_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("edit.png"));
+      .getResource("img/edit.png"));
 
   ImageIcon FILES_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("files.png"));
+      .getResource("img/files.png"));
   ImageIcon NEW_PROJ_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("new.png"));
+      .getResource("img/new.png"));
   ImageIcon SETTINGS_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("settings.png"));
+      .getResource("img/settings.png"));
   ImageIcon HELP_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
-      .getResource("help.png"));
+      .getResource("img/help.png"));
 }
