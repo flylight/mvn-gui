@@ -18,12 +18,12 @@ import javax.swing.JScrollPane;
 
 import org.ar.mvn.gui.constants.PanelSources;
 import org.ar.mvn.gui.constants.Sources;
-import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
 import org.ar.mvn.gui.listeners.LabelMouseOverListener;
 import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
+import org.ar.mvn.gui.utils.LocaleUtil;
 import org.ar.mvn.gui.utils.UpdateUI;
 
 public class DesktopPanel extends JPanel {
@@ -33,6 +33,7 @@ public class DesktopPanel extends JPanel {
   private JPanel centerPanel;
 
   public DesktopPanel() {
+    ApplicationStateManager.INSTANCE().loadSettings();
     setBackground(Color.GRAY);
     setLayout(new BorderLayout());
 
@@ -110,7 +111,7 @@ public class DesktopPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
           if (project.getStatus() == Project.STATUS_UNAVAILABLE) {
             DialogMessagesUtil.showErrorMessage(DesktopPanel.this,
-                Text.THIS_PROJECT_IS_UNAVAILABLE_MAYBE_IT_WAS_MOVED_OR_DELETED);
+                LocaleUtil.getWord("THIS_PROJECT_IS_UNAVAILABLE_MAYBE_IT_WAS_MOVED_OR_DELETED"));
           } else {
             // find selected and deselect
             for (Project p : ApplicationStateManager.INSTANCE().getProjectsList()) {
@@ -168,7 +169,7 @@ public class DesktopPanel extends JPanel {
       }
     });
     //
-    JLabel projectListLabel = new JLabel(Text.PROJECTS);
+    JLabel projectListLabel = new JLabel(LocaleUtil.getWord("PROJECTS"));
     projectListLabel.setFont(new Font("arial", Font.BOLD, 15));
     projectListLabel.setForeground(Color.WHITE);
     projectListLabel.setPreferredSize(new Dimension(200, 35));
@@ -194,7 +195,7 @@ public class DesktopPanel extends JPanel {
   }
 
   private void deleteProject(Project project) {
-    if (DialogMessagesUtil.confirmationWindow(this, Text.ARE_YOU_SURE_WANT_TO_DELETE_THIS_PROJECT)) {
+    if (DialogMessagesUtil.confirmationWindow(this, LocaleUtil.getWord("ARE_YOU_SURE_WANT_TO_DELETE_THIS_PROJECT"))) {
       ApplicationStateManager.INSTANCE().removeFromProjectList(project);
       refreshProjectTable();
     }

@@ -95,11 +95,11 @@ public class DataBaseStateManager implements IDataBaseStateManager {
   public int saveSettings(Settings s) throws SQLException {
     int result =
         dbStatement.executeUpdate("update " + SETTINGS_TABLE + " set mavenPath = '"
-            + s.getMavenHome() + "' where id = " + SETTINGS_ID);
+            + s.getMavenHome() +  "' , locale = '" + s.getLocale() +"' where id = " + SETTINGS_ID);
     if (result == 0) {
       result =
-          dbStatement.executeUpdate("insert into " + SETTINGS_TABLE + " (id,mavenPath) values ("
-              + SETTINGS_ID + ",'" + s.getMavenHome() + "')");
+          dbStatement.executeUpdate("insert into " + SETTINGS_TABLE + " (id,mavenPath, locale) values ("
+              + SETTINGS_ID + ",'" + s.getMavenHome() + "', ' " + s.getLocale()+"')");
     }
     return result;
   }
@@ -109,11 +109,12 @@ public class DataBaseStateManager implements IDataBaseStateManager {
     Settings s = new Settings();
 
     ResultSet queryResult =
-        dbStatement.executeQuery("select mavenPath from " + SETTINGS_TABLE + " where id = "
+        dbStatement.executeQuery("select mavenPath, locale from " + SETTINGS_TABLE + " where id = "
             + SETTINGS_ID);
 
     while (queryResult.next()) {
       s.setMavenHome(queryResult.getString("mavenPath"));
+      s.setLocale(queryResult.getString("locale"));
     }
 
     return s;

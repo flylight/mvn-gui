@@ -6,8 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
 import javax.swing.JFileChooser;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 
 public final class OSUtil {
 
@@ -39,9 +39,14 @@ public final class OSUtil {
 
     StringBuilder result = new StringBuilder();
     try {
+      String fileName = "help";
+      if (ApplicationStateManager.INSTANCE().getSettings().getLocale().equals("EN"))
+        fileName += "_en";
+      else if (ApplicationStateManager.INSTANCE().getSettings().getLocale().equals("TR"))
+        fileName += "_tr";
       BufferedReader reader =
           new BufferedReader(new FileReader(new File(Thread.currentThread().getContextClassLoader()
-              .getResource("help").toURI())));
+              .getResource(fileName).toURI())));
 
       String buffer;
       while ((buffer = reader.readLine()) != null) {

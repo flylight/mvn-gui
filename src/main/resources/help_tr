@@ -1,0 +1,29 @@
+          MVN-GUI
+
+    ---Giriş---
+
+  Maven ile proje oluşturma, derleme ve yönetmek için basit desktop uygulamasıdır. Bu açık
+  kaynak kodlu projenin ikinci versiyonudur. Umarım ihtiyacı olan insanlar bu uygulamayı bulurlar.
+  Ben bu uygulamayı kendi ihtiyaçlarım doğrultusunda oluşturdum.
+
+    ---Yardım---
+
+  Sekme 1 :
+  Sol köşede projelerin listelendiği tabloda proje ekleyebilir veya var olan bir projeyi
+  silebilirsiniz. Ayrıca projenin statü'lerinide görebilirsiniz.
+  1. Mavi nokta - Proje mevcut veya hazır.
+  2. Sarı nokta - Proje mevcut ama işlem devam ediyor (silinmiş veya işlem devam ediyor olabilir).
+  3. Gri nokta - Proje mevcut değil (Proje mevcut değil veya Maven (pom.xml) içermiyor).
+  4. Kırmızı nokta - Bazı komutlar hata almış olabilir.
+
+  Herhangi bir proje ismine tıkladığınızda çalışma panelini göreceksiniz
+  1. Proje dizinin açabilirsiniz (proje isminin yanındaki icon'a tıklayınız)
+  2. Proje dinizi altında bazı default MAVEN komutlarını çalıştırabilirsiniz.
+  3. Proje dinizi altında bazı özel MAVEN komutlarını çalıştırabilirsiniz.
+
+  TAB 2 :
+  Bu sekmede yeni MAVEN projesi oluşturabilirsiniz. Proje dizini, arficatId ve groupId alanlarını
+  girerek yeni proje kaydedebilirsiniz. Ayrıca MAVEN archetype tipinide seçebilirsiniz.
+
+  TAB 3 :
+  Bu sekmede MAVEN'ın kurulu olduğu dizini ve dil seçeneğini ayarlayabilirsiniz.

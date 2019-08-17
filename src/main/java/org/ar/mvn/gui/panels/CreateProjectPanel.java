@@ -24,10 +24,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultCaret;
 
-import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.listeners.IGenerateProjectExecutorListener;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
+import org.ar.mvn.gui.utils.LocaleUtil;
 import org.ar.mvn.gui.utils.OSUtil;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
@@ -60,7 +60,7 @@ public class CreateProjectPanel extends JPanel {
     JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     actionPanel.setBackground(Color.GRAY);
 
-    final JButton generateProject = new JButton(Text.GENERATE);
+    final JButton generateProject = new JButton(LocaleUtil.getWord("GENERATE"));
 
     generateProject.addActionListener(new ActionListener() {
 
@@ -75,7 +75,7 @@ public class CreateProjectPanel extends JPanel {
                 // disable button
                 generateProject.setEnabled(false);
                 // prepare console
-                log = new StringBuilder(Text.EMPTY);
+                log = new StringBuilder(LocaleUtil.getWord("EMPTY"));
                 refreshConsole();
                 // execute
                 CommandExecutorUtil.executeGenerateProjectCommand(projectPathField.getText(),
@@ -94,22 +94,22 @@ public class CreateProjectPanel extends JPanel {
                     });
               } else {
                 DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                    Text.ARCHETYPE_CAN_NOT_BE_EMPTY);
+                    LocaleUtil.getWord("ARCHETYPE_CAN_NOT_BE_EMPTY"));
               }
             } else {
               //
               DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                  Text.ARTIFACT_ID_CAN_NOT_BE_EMPTY);
+                  LocaleUtil.getWord("ARTIFACT_ID_CAN_NOT_BE_EMPTY"));
             }
           } else {
             //
             DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                Text.GROUP_ID_CAN_NOT_BE_EMPTY);
+                LocaleUtil.getWord("GROUP_ID_CAN_NOT_BE_EMPTY"));
           }
         } else {
           //
           DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-              Text.PROJECT_HOME_PATH_INCORRECT);
+              LocaleUtil.getWord("PROJECT_HOME_PATH_INCORRECT"));
         }
       }
     });
@@ -173,7 +173,7 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 0;
     c.gridx = 0;
 
-    JLabel projectInfoLanel = new JLabel(Text.PROJECT_INFO);
+    JLabel projectInfoLanel = new JLabel(LocaleUtil.getWord("PROJECT_INFO"));
     projectInfoLanel.setFont(new Font("arial", Font.BOLD, 15));
     projectInfoLanel.setForeground(Color.WHITE);
 
@@ -183,9 +183,9 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 1;
     c.gridx = 0;
 
-    JLabel projectPathLabel = new JLabel(Text.SELECT_FOLDER_FOR_NEW_PROJECT);
+    JLabel projectPathLabel = new JLabel(LocaleUtil.getWord("SELECT_FOLDER_FOR_NEW_PROJECT"));
     projectPathField = new JTextField();
-    JButton projectSelectPathBtn = new JButton(Text.EXTRA);
+    JButton projectSelectPathBtn = new JButton(LocaleUtil.getWord("EXTRA"));
 
     projectPathLabel.setPreferredSize(new Dimension(200, 25));
     projectPathField.setPreferredSize(new Dimension(500, 25));
@@ -195,7 +195,7 @@ public class CreateProjectPanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String path =
-            OSUtil.showPathChooser(Text.SELECT_PARENT_FOLDER_FOR_NEW_PROJECT,
+            OSUtil.showPathChooser(LocaleUtil.getWord("SELECT_PARENT_FOLDER_FOR_NEW_PROJECT"),
                 CreateProjectPanel.this);
         if (!path.isEmpty()) {
           projectPathField.setText(path);
@@ -215,7 +215,7 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 2;
     c.gridx = 0;
 
-    JLabel artifactIDLabel = new JLabel(Text.PROJECT_NAME_ARTIFACT_ID);
+    JLabel artifactIDLabel = new JLabel(LocaleUtil.getWord("PROJECT_NAME_ARTIFACT_ID"));
     arfitacIDField = new JTextField();
 
     arfitacIDField.setPreferredSize(new Dimension(500, 25));
@@ -229,7 +229,7 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 3;
     c.gridx = 0;
 
-    JLabel groupIDLabel = new JLabel(Text.PACKAGE_PATH_GROUP_ID);
+    JLabel groupIDLabel = new JLabel(LocaleUtil.getWord("PACKAGE_PATH_GROUP_ID"));
     groupIDField = new JTextField();
 
     groupIDField.setPreferredSize(new Dimension(500, 25));
@@ -242,7 +242,7 @@ public class CreateProjectPanel extends JPanel {
     JPanel archetypePanel = new JPanel(new GridLayout(2, 1));
     archetypePanel.setBackground(Color.GRAY);
 
-    JLabel projectArchetypeLabel = new JLabel(Text.MAVEN_ARCHETYPE_ID);
+    JLabel projectArchetypeLabel = new JLabel(LocaleUtil.getWord("MAVEN_ARCHETYPE_ID"));
     projectArchetypeLabel.setFont(new Font("arial", Font.BOLD, 15));
     projectArchetypeLabel.setForeground(Color.WHITE);
     projectArchetypeLabel.setBorder(BorderFactory.createMatteBorder(0, 26, 0, 0, Color.GRAY));
@@ -263,13 +263,13 @@ public class CreateProjectPanel extends JPanel {
     c.gridx = 0;
 
 
-    final JRadioButton quickStartArchetype = new JRadioButton(Text.SIMPLE);
-    final JRadioButton simpleWebJavaArchetype = new JRadioButton(Text.SIMPLE_WEB);
+    final JRadioButton quickStartArchetype = new JRadioButton(LocaleUtil.getWord("SIMPLE"));
+    final JRadioButton simpleWebJavaArchetype = new JRadioButton(LocaleUtil.getWord("SIMPLE_WEB"));
     // add to map with archetype value
     radioToArchetype.put(quickStartArchetype, "maven-archetype-quickstart");
     radioToArchetype.put(simpleWebJavaArchetype, "maven-archetype-webapp");
     //
-    custom = new JRadioButton(Text.OTHER);
+    custom = new JRadioButton(LocaleUtil.getWord("OTHER"));
 
 
     quickStartArchetype.addActionListener(new ActionListener() {
@@ -312,7 +312,7 @@ public class CreateProjectPanel extends JPanel {
     JPanel otherArchetypePanel = new JPanel(new FlowLayout());
     otherArchetypePanel.setBackground(Color.GRAY);
 
-    JLabel otherArchetypeLabel = new JLabel(Text.TYPE_YOUR_ARCHETYPE_ID);
+    JLabel otherArchetypeLabel = new JLabel(LocaleUtil.getWord("TYPE_YOUR_ARCHETYPE_ID"));
 
 
     otherArchetype = new JTextField();

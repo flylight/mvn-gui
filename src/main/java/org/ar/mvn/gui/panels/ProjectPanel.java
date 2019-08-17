@@ -24,13 +24,13 @@ import javax.swing.text.DefaultCaret;
 
 import org.ar.mvn.gui.constants.PanelSources;
 import org.ar.mvn.gui.constants.Sources;
-import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.ITaskExecutorListener;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
 import org.ar.mvn.gui.listeners.LabelMouseOverListener;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
+import org.ar.mvn.gui.utils.LocaleUtil;
 import org.ar.mvn.gui.utils.OSUtil;
 import org.ar.mvn.gui.utils.UpdateUI;
 
@@ -79,7 +79,7 @@ public class ProjectPanel extends JPanel {
     commandLinePanel.setPreferredSize(new Dimension(0, 35));
     commandLinePanel.setBackground(Color.GRAY);
     // label
-    commandLinePanel.add(new JLabel(Text.MVN_LB));
+    commandLinePanel.add(new JLabel(LocaleUtil.getWord("MVN_LB")));
     // manual command line
     commandLine = new JTextField();
     commandLine.addKeyListener(new KeyListener() {
@@ -106,7 +106,7 @@ public class ProjectPanel extends JPanel {
     commandLine.setPreferredSize(new Dimension(400, 25));
     commandLinePanel.add(commandLine);
 
-    JButton executeCommand = new JButton(Text.EXECUTE);
+    JButton executeCommand = new JButton(LocaleUtil.getWord("EXECUTE"));
     executeCommand.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -122,12 +122,12 @@ public class ProjectPanel extends JPanel {
 
   private void executeCommand(String command) {
     if (command != null && !command.isEmpty()) {
-      command += (skipTests.isSelected() ? DSKIP_TESTS : Text.EMPTY);
+      command += (skipTests.isSelected() ? DSKIP_TESTS : LocaleUtil.getWord("EMPTY"));
       if (currentProject.getStatus() != Project.STATUS_BUSY) {
         //
         currentProject.getConsoleLog().append(COMMAND_PREFIX + command);
         currentProject.getConsoleLog().append(NEW_LINE);
-        commandLine.setText(Text.EMPTY);
+        commandLine.setText(LocaleUtil.getWord("EMPTY"));
         refreshConsole();
         //
         currentProject.setStatus(Project.STATUS_BUSY);
@@ -149,7 +149,7 @@ public class ProjectPanel extends JPanel {
         });
       } else {
         DialogMessagesUtil.showWarningMessage(this,
-            Text.PROJECT_IS_BUSY_WAIT_WHILE_OTHER_OPERATION_WAS_FINISHED);
+            LocaleUtil.getWord("PROJECT_IS_BUSY_WAIT_WHILE_OTHER_OPERATION_WAS_FINISHED"));
       }
     }
   }
@@ -182,7 +182,7 @@ public class ProjectPanel extends JPanel {
     JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
     actionPanel.setBackground(Color.GRAY);
 
-    JButton clean = new JButton(Text.CLEAN);
+    JButton clean = new JButton(LocaleUtil.getWord("CLEAN"));
     clean.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -191,7 +191,7 @@ public class ProjectPanel extends JPanel {
     });
     actionPanel.add(clean);
 
-    JButton install = new JButton(Text.INSTALL);
+    JButton install = new JButton(LocaleUtil.getWord("INSTALL"));
     install.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -200,7 +200,7 @@ public class ProjectPanel extends JPanel {
     });
     actionPanel.add(install);
 
-    JButton cleanInstall = new JButton(Text.CLEAN_INSTALL);
+    JButton cleanInstall = new JButton(LocaleUtil.getWord("CLEAN_INSTALL"));
     cleanInstall.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -209,7 +209,7 @@ public class ProjectPanel extends JPanel {
     });
     actionPanel.add(cleanInstall);
 
-    JButton compile = new JButton(Text.COMPILE);
+    JButton compile = new JButton(LocaleUtil.getWord("COMPILE"));
     compile.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -218,7 +218,7 @@ public class ProjectPanel extends JPanel {
     });
     actionPanel.add(compile);
 
-    skipTests = new JCheckBox(Text.SKIP_TESTS);
+    skipTests = new JCheckBox(LocaleUtil.getWord("SKIP_TESTS"));
 
     actionPanel.add(skipTests);
 
