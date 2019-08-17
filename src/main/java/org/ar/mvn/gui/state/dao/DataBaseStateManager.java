@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.entity.Settings;
 
@@ -35,8 +34,20 @@ public class DataBaseStateManager implements IDataBaseStateManager {
     dbStatement.execute(sql);
     // settings table
     sql =
-        CREATE_TABLE_IF_NOT_EXISTS + SETTINGS_TABLE + " (id INTEGER PRIMARY KEY, mavenPath TEXT);";
+        CREATE_TABLE_IF_NOT_EXISTS + SETTINGS_TABLE + " (id INTEGER PRIMARY KEY, mavenPath TEXT, locale TEXT)";
     dbStatement.execute(sql);
+
+    sql = "select * from " + SETTINGS_TABLE + " where id = " + SETTINGS_ID;
+    dbStatement.execute(sql);
+    if (!dbStatement.getResultSet().next()) {
+      sql =
+          "insert into "
+              + SETTINGS_TABLE
+              + " (id,mavenPath, locale) values ("
+              + SETTINGS_ID
+              + ",'/opt/maven/', 'EN')";
+      dbStatement.execute(sql);
+    }
   }
 
   private void initDatabaseConnection() {
