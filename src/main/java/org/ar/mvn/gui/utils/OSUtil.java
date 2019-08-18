@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.swing.JFileChooser;
 import org.ar.mvn.gui.state.ApplicationStateManager;
 
@@ -44,16 +46,15 @@ public final class OSUtil {
         fileName += "_en";
       else if (ApplicationStateManager.INSTANCE().getSettings().getLocale().equals("TR"))
         fileName += "_tr";
-      BufferedReader reader =
-          new BufferedReader(new FileReader(new File(Thread.currentThread().getContextClassLoader()
-              .getResource(fileName).toURI())));
+      InputStream inputStream = OSUtil.class.getClassLoader().getResourceAsStream(fileName);
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
       String buffer;
-      while ((buffer = reader.readLine()) != null) {
+      while ((buffer = bufferedReader.readLine()) != null) {
         result.append(buffer);
         result.append("\n");
       }
-      reader.close();
+      bufferedReader.close();
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
