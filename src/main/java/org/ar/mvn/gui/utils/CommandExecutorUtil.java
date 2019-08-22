@@ -1,13 +1,14 @@
 package org.ar.mvn.gui.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.IGenerateProjectExecutorListener;
 import org.ar.mvn.gui.listeners.ITaskExecutorListener;
 import org.ar.mvn.gui.state.ApplicationStateManager;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 
 public final class CommandExecutorUtil {
 
@@ -22,7 +23,13 @@ public final class CommandExecutorUtil {
         UpdaterState updaterState = startConsoleUpdater(listener);
         try {
           String maven = generateMavenLocation();
-          Process process = r.exec(maven + " " + command + " -f " + p.getPath());
+          Process process = null;
+          if (OSUtil.isWindows())
+            process = r.exec("cmd.exe /c " + maven + " " + command + " -f " + p.getPath() + "/pom.xml");
+          else
+            process = r.exec(maven + " " + command + " -f " + p.getPath());
+
+
           BufferedReader reader =
               new BufferedReader(new InputStreamReader(process.getInputStream()));
           String buffer = reader.readLine();
@@ -58,10 +65,17 @@ public final class CommandExecutorUtil {
       public void run() {
         try {
           String maven = generateMavenLocation();
-          Process process =
-              r.exec(maven + " archetype:generate -DgroupId=" + group + " -DartifactId="
+          Process process = null;
+
+          if(OSUtil.isWindows())
+            process = r.exec("cmd.exe /c " + maven + " archetype:generate -DgroupId=" + group + " -DartifactId="
                   + artifactory + " -DarchetypeArtifactId=" + archetype
                   + " -DinteractiveMode=false", null, new File(destination));
+          else
+            process = r.exec(maven + " archetype:generate -DgroupId=" + group + " -DartifactId="
+                    + artifactory + " -DarchetypeArtifactId=" + archetype
+                    + " -DinteractiveMode=false", null, new File(destination));
+
           BufferedReader reader =
               new BufferedReader(new InputStreamReader(process.getInputStream()));
           String buffer = reader.readLine();

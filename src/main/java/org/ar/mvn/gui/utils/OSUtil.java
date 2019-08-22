@@ -1,20 +1,33 @@
 package org.ar.mvn.gui.utils;
 
-import java.awt.Component;
-import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import javax.swing.JFileChooser;
 import org.ar.mvn.gui.state.ApplicationStateManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 
 public final class OSUtil {
 
+  private final static String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
+
   private OSUtil() {
     throw new UnsupportedOperationException();
+  }
+
+  public static boolean isWindows() {
+    return OPERATING_SYSTEM.indexOf("win") >= 0;
+  }
+
+  public static boolean isMac() {
+    return OPERATING_SYSTEM.indexOf("mac") >= 0;
+  }
+
+  public static boolean isUnix() {
+    return OPERATING_SYSTEM.indexOf("nix") >= 0 || OPERATING_SYSTEM.indexOf("nux") >= 0 || OPERATING_SYSTEM.indexOf("aix") > 0;
+  }
+
+  public static boolean isSolaris() {
+    return OPERATING_SYSTEM.indexOf("sunos") >= 0;
   }
 
   public static void openInOSFileManager(String path) {
