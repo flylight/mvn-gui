@@ -1,8 +1,6 @@
 package org.ar.mvn.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,10 +22,11 @@ public class GeneralFrame extends JFrame {
 
   public GeneralFrame() {
     setTitle("MVN GUI");
-    setSize(800, 600);
+    setMinimumSize(new Dimension(800, 600));
+    //setSize(800, 600);
     setLocationRelativeTo(null);
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setResizable(false);
+    //setDefaultCloseOperation(EXIT_ON_CLOSE);
+    //setResizable(false);
     //
     setIcon();
     //
