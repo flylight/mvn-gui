@@ -260,6 +260,18 @@ public class ProjectPanel extends JPanel {
       }
     });
     header.add(editPomFile);
+    JLabel clearCMD = new JLabel(Sources.CLEAR_CMD_IMAGE);
+    clearCMD.setPreferredSize(new Dimension(24, 24));
+    clearCMD.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    clearCMD.addMouseListener(new LabelMouseOverListener(clearCMD));
+    clearCMD.addMouseListener(new LabelMouseClickListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        currentProject.setConsoleLog(new StringBuilder());
+        refreshConsole();
+      }
+    });
+    header.add(clearCMD);
     //
     add(header, BorderLayout.NORTH);
   }

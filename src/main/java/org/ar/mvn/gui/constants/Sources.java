@@ -43,4 +43,6 @@ public interface Sources {
       .getResource("img/settings.png"));
   ImageIcon HELP_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
       .getResource("img/help.png"));
+  ImageIcon CLEAR_CMD_IMAGE = new ImageIcon(Thread.currentThread().getContextClassLoader()
+      .getResource("img/clear.png"));
 }
