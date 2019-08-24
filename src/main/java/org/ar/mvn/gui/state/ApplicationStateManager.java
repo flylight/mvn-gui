@@ -1,18 +1,20 @@
 package org.ar.mvn.gui.state;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.entity.Settings;
-import org.ar.mvn.gui.state.dao.DataBaseStateManager;
+import org.ar.mvn.gui.state.dao.HibernateManager;
 import org.ar.mvn.gui.state.dao.IDataBaseStateManager;
+import org.ar.mvn.gui.utils.LocaleUtil;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
 public class ApplicationStateManager {
 
   private static ApplicationStateManager instance;
-  private IDataBaseStateManager dataBaseManager = new DataBaseStateManager();
+  private IDataBaseStateManager dataBaseManager = new HibernateManager();
   private Settings settings = new Settings();
 
   private List<Project> projectsList = new ArrayList<Project>();
@@ -71,11 +73,19 @@ public class ApplicationStateManager {
 
   public void loadSettings() {
     try {
-      this.settings = dataBaseManager.loadSettings();
+      settings = dataBaseManager.loadSettings();
+      if(settings == null) createDummySettings();
     } catch (Exception e) {
       // TODO add logger
       e.printStackTrace();
     }
+  }
+
+  public void createDummySettings() throws SQLException {
+    settings = new Settings();
+    settings.setLocale("EN");
+    settings.setMavenHome(LocaleUtil.getWord("SELECT_MAVEN_PROJECT_FOLDER"));
+    saveSettings(settings);
   }
 
   public boolean saveSettings(Settings s) {

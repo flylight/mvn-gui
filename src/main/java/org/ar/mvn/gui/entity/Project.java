@@ -1,22 +1,37 @@
 package org.ar.mvn.gui.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
+@Entity
 public class Project {
+
+  @Transient
   public static final int STATUS_AVAILABLE = 1;
+  @Transient
   public static final int STATUS_UNAVAILABLE = 0;
+  @Transient
   public static final int STATUS_BUSY = 2;
+  @Transient
   public static final int STATUS_ERROR = 3;
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
   private String path;
 
 
-
   // temporary data
+  @Transient
   private StringBuilder consoleLog = new StringBuilder();
+  @Transient
   private int status = 0;
+  @Transient
   private boolean isSelected;
 
   public String getName() {

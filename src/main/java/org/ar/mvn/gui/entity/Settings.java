@@ -1,10 +1,14 @@
 package org.ar.mvn.gui.entity;
 
-import java.util.Locale;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
+@Entity
 public class Settings {
 
+  @Id
+  private int id;
   private String mavenHome = "";
 
   private String locale;
