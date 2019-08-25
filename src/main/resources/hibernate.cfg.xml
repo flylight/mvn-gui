@@ -14,6 +14,6 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
     <mapping class="org.ar.mvn.gui.entity.Project"/>
-    <mapping class="org.ar.mvn.gui.entity.Settings"/>
+    <mapping class="org.ar.mvn.gui.entity.Setting"/>
   </session-factory>
 </hibernate-configuration>

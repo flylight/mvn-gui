@@ -1,7 +1,6 @@
 package org.hibernate.dialect;
 
 import java.sql.Types;
-
 import org.hibernate.dialect.function.AbstractAnsiTrimEmulationFunction;
 import org.hibernate.dialect.function.NoArgSQLFunction;
 import org.hibernate.dialect.function.SQLFunction;
@@ -31,70 +30,56 @@ public class SQLiteDialect extends Dialect {
     registerColumnType(Types.BINARY, "blob");
     registerColumnType(Types.VARBINARY, "blob");
     registerColumnType(Types.LONGVARBINARY, "blob");
-    // registerColumnType(Types.NULL, "null");
     registerColumnType(Types.BLOB, "blob");
     registerColumnType(Types.CLOB, "clob");
     registerColumnType(Types.BOOLEAN, "boolean");
 
-    registerFunction( "concat", new VarArgsSQLFunction(StandardBasicTypes.STRING, "", "||", "") );
-    registerFunction( "mod", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "?1 % ?2" ) );
-    registerFunction( "quote", new StandardSQLFunction("quote", StandardBasicTypes.STRING) );
-    registerFunction( "random", new NoArgSQLFunction("random", StandardBasicTypes.INTEGER) );
-    registerFunction( "round", new StandardSQLFunction("round") );
-    registerFunction( "substr", new StandardSQLFunction("substr", StandardBasicTypes.STRING) );
-    registerFunction( "trim", new AbstractAnsiTrimEmulationFunction() {
-      protected SQLFunction resolveBothSpaceTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?1)");
-      }
+    registerFunction("concat", new VarArgsSQLFunction(StandardBasicTypes.STRING, "", "||", ""));
+    registerFunction("mod", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "?1 % ?2"));
+    registerFunction("quote", new StandardSQLFunction("quote", StandardBasicTypes.STRING));
+    registerFunction("random", new NoArgSQLFunction("random", StandardBasicTypes.INTEGER));
+    registerFunction("round", new StandardSQLFunction("round"));
+    registerFunction("substr", new StandardSQLFunction("substr", StandardBasicTypes.STRING));
+    registerFunction(
+        "trim",
+        new AbstractAnsiTrimEmulationFunction() {
+          protected SQLFunction resolveBothSpaceTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?1)");
+          }
 
-      protected SQLFunction resolveBothSpaceTrimFromFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?2)");
-      }
+          protected SQLFunction resolveBothSpaceTrimFromFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?2)");
+          }
 
-      protected SQLFunction resolveLeadingSpaceTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "ltrim(?1)");
-      }
+          protected SQLFunction resolveLeadingSpaceTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "ltrim(?1)");
+          }
 
-      protected SQLFunction resolveTrailingSpaceTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "rtrim(?1)");
-      }
+          protected SQLFunction resolveTrailingSpaceTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "rtrim(?1)");
+          }
 
-      protected SQLFunction resolveBothTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?1, ?2)");
-      }
+          protected SQLFunction resolveBothTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(?1, ?2)");
+          }
 
-      protected SQLFunction resolveLeadingTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "ltrim(?1, ?2)");
-      }
+          protected SQLFunction resolveLeadingTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "ltrim(?1, ?2)");
+          }
 
-      protected SQLFunction resolveTrailingTrimFunction() {
-        return new SQLFunctionTemplate(StandardBasicTypes.STRING, "rtrim(?1, ?2)");
-      }
-    } );
+          protected SQLFunction resolveTrailingTrimFunction() {
+            return new SQLFunctionTemplate(StandardBasicTypes.STRING, "rtrim(?1, ?2)");
+          }
+        });
   }
 
   public boolean supportsIdentityColumns() {
     return true;
   }
 
-  /*
-  public boolean supportsInsertSelectIdentity() {
-    return true; // As specify in NHibernate dialect
-  }
-  */
-
   public boolean hasDataTypeInIdentityColumn() {
     return false; // As specify in NHibernate dialect
   }
-
-  /*
-  public String appendIdentitySelectToInsert(String insertString) {
-    return new StringBuffer(insertString.length()+30). // As specify in NHibernate dialect
-      append(insertString).
-      append("; ").append(getIdentitySelectString()).
-      toString();
-  }
-  */
 
   public String getIdentityColumnString() {
     // return "integer primary key autoincrement";
@@ -110,10 +95,10 @@ public class SQLiteDialect extends Dialect {
   }
 
   protected String getLimitString(String query, boolean hasOffset) {
-    return new StringBuffer(query.length()+20).
-        append(query).
-        append(hasOffset ? " limit ? offset ?" : " limit ?").
-        toString();
+    return new StringBuffer(query.length() + 20)
+        .append(query)
+        .append(hasOffset ? " limit ? offset ?" : " limit ?")
+        .toString();
   }
 
   public boolean supportsTemporaryTables() {
@@ -165,11 +150,15 @@ public class SQLiteDialect extends Dialect {
   }
 
   public String getDropForeignKeyString() {
-    throw new UnsupportedOperationException("No drop foreign key syntax supported by SQLiteDialect");
+    throw new UnsupportedOperationException(
+        "No drop foreign key syntax supported by SQLiteDialect");
   }
 
-  public String getAddForeignKeyConstraintString(String constraintName,
-      String[] foreignKey, String referencedTable, String[] primaryKey,
+  public String getAddForeignKeyConstraintString(
+      String constraintName,
+      String[] foreignKey,
+      String referencedTable,
+      String[] primaryKey,
       boolean referencesPrimaryKey) {
     throw new UnsupportedOperationException("No add foreign key syntax supported by SQLiteDialect");
   }
