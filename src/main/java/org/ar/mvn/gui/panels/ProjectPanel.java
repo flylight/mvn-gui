@@ -26,6 +26,7 @@ import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.listeners.ITaskExecutorListener;
 import org.ar.mvn.gui.listeners.LabelMouseClickListener;
 import org.ar.mvn.gui.listeners.LabelMouseOverListener;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
 import org.ar.mvn.gui.utils.ContentUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
@@ -163,6 +164,11 @@ public class ProjectPanel extends JPanel {
   private JScrollPane buildConsolePanel() {
     consoleView = new JTextArea();
 
+    consoleView.setFont(
+        new Font(
+            "arial",
+            Font.PLAIN,
+            ApplicationStateManager.INSTANCE().getSetting().getConsoleTextSize()));
     consoleView.setEditable(false);
     consoleView.setAutoscrolls(true);
     consoleView.setBackground(Color.BLACK);

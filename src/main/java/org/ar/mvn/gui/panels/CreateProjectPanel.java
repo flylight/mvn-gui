@@ -8,8 +8,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultCaret;
 import org.ar.mvn.gui.listeners.IGenerateProjectExecutorListener;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
 import org.ar.mvn.gui.utils.ContentUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
@@ -62,8 +61,7 @@ public class CreateProjectPanel extends JPanel {
             if (groupID.getText() != null && !groupID.getText().isEmpty()) {
               if (arfitactID.getText() != null && !arfitactID.getText().isEmpty()) {
                 if (!custom.isSelected()
-                    || (otherArchetype.getText() != null
-                        && !otherArchetype.getText().isEmpty())) {
+                    || (otherArchetype.getText() != null && !otherArchetype.getText().isEmpty())) {
                   // disable button
                   generateProject.setEnabled(false);
                   // prepare console
@@ -126,6 +124,11 @@ public class CreateProjectPanel extends JPanel {
   private JScrollPane consolePanel() {
     consoleView = new JTextArea();
 
+    consoleView.setFont(
+        new Font(
+            "arial",
+            Font.PLAIN,
+            ApplicationStateManager.INSTANCE().getSetting().getConsoleTextSize()));
     consoleView.setEditable(false);
     consoleView.setAutoscrolls(true);
     consoleView.setBackground(Color.BLACK);

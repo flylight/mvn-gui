@@ -11,6 +11,7 @@ public class Setting {
   private String mavenHome = "";
   private String locale;
   private boolean sortProjectsByName;
+  private int consoleTextSize;
 
   public String getMavenHome() {
     return mavenHome;
@@ -34,5 +35,13 @@ public class Setting {
 
   public void setSortProjectsByName(boolean sortProjectsByName) {
     this.sortProjectsByName = sortProjectsByName;
+  }
+
+  public int getConsoleTextSize() {
+    return consoleTextSize;
+  }
+
+  public void setConsoleTextSize(int consoleTextSize) {
+    this.consoleTextSize = consoleTextSize;
   }
 }

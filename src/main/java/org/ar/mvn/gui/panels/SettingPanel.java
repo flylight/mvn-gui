@@ -26,6 +26,8 @@ public class SettingPanel extends JPanel {
   private JComboBox<String> localeComboBox;
   private String[] locales = {"EN", "TR"};
   private JCheckBox projectSortCheckBox;
+  private JComboBox<Integer> consoleTextSizeComboBox;
+  private Integer[] consoleTextSizes = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
   public SettingPanel() {
     setBackground(Color.GRAY);
@@ -35,11 +37,13 @@ public class SettingPanel extends JPanel {
   }
 
   private void loadSetting() {
-    ApplicationStateManager.INSTANCE().loadSetting();
-    mavenHome.setText(ApplicationStateManager.INSTANCE().getSetting().getMavenHome());
-    localeComboBox.setSelectedItem(ApplicationStateManager.INSTANCE().getSetting().getLocale());
-    projectSortCheckBox
-        .setSelected(ApplicationStateManager.INSTANCE().getSetting().isSortProjectsByName());
+    ApplicationStateManager applicationStateManager = ApplicationStateManager.INSTANCE();
+    applicationStateManager.loadSetting();
+    mavenHome.setText(applicationStateManager.getSetting().getMavenHome());
+    localeComboBox.setSelectedItem(applicationStateManager.getSetting().getLocale());
+    projectSortCheckBox.setSelected(applicationStateManager.getSetting().isSortProjectsByName());
+    consoleTextSizeComboBox
+        .setSelectedItem(applicationStateManager.getSetting().getConsoleTextSize());
   }
 
   private void buildUI() {
@@ -95,6 +99,14 @@ public class SettingPanel extends JPanel {
     projectSortCheckBox = new JCheckBox();
     settingPanel.add(projectSortCheckBox, c);
 
+    c.gridy = 3;
+    c.gridx = 0;
+    settingPanel.add(new JLabel(ContentUtil.getWord("CONSOLE_TEXT_SIZE_LBL")), c);
+
+    c.gridx = 1;
+    consoleTextSizeComboBox = new JComboBox<>(consoleTextSizes);
+    settingPanel.add(consoleTextSizeComboBox, c);
+
     add(getControlPanel(), BorderLayout.CENTER);
     add(settingPanel, BorderLayout.NORTH);
   }
@@ -102,7 +114,6 @@ public class SettingPanel extends JPanel {
   private Component getControlPanel() {
     JPanel control = new JPanel(new FlowLayout(FlowLayout.CENTER));
     control.setBackground(Color.GRAY);
-
 
     JButton save = new JButton(ContentUtil.getWord("SAVE"));
     save.addActionListener(
@@ -112,6 +123,7 @@ public class SettingPanel extends JPanel {
             setting.setMavenHome(mavenHome.getText());
             setting.setLocale((String) localeComboBox.getSelectedItem());
             setting.setSortProjectsByName(projectSortCheckBox.isSelected());
+            setting.setConsoleTextSize((Integer) consoleTextSizeComboBox.getSelectedItem());
 
             if (ApplicationStateManager.INSTANCE().saveSetting(setting)) {
               DialogMessagesUtil.showInformationMessage(

@@ -79,6 +79,8 @@ public class ApplicationStateManager {
     setting = new Setting();
     setting.setLocale("EN");
     setting.setMavenHome(ContentUtil.getWord("SELECT_MAVEN_PROJECT_FOLDER"));
+    setting.setSortProjectsByName(false);
+    setting.setConsoleTextSize(13);
     saveSetting(setting);
   }
 
