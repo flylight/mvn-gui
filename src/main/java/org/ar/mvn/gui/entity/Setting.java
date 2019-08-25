@@ -7,8 +7,7 @@ import org.ar.mvn.gui.utils.VerificationUtil;
 @Entity
 public class Setting {
 
-  @Id
-  private int id;
+  @Id private int id;
   private String mavenHome = "";
   private String locale;
 

@@ -5,5 +5,4 @@ public interface ITaskExecutorListener {
   void executed();
 
   void updateConsole();
-
 }

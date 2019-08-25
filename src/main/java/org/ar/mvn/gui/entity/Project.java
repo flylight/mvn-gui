@@ -10,18 +10,16 @@ import org.ar.mvn.gui.utils.VerificationUtil;
 @Entity
 public class Project {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
-
-  private String name;
-  private String path;
-
   // temporary data
   @Transient public static final int STATUS_UNAVAILABLE = 0;
   @Transient public static final int STATUS_AVAILABLE = 1;
   @Transient public static final int STATUS_BUSY = 2;
   @Transient public static final int STATUS_ERROR = 3;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int id;
+  private String name;
+  private String path;
   @Transient private StringBuilder consoleLog = new StringBuilder();
   @Transient private int status = 0;
   @Transient private boolean isSelected;
