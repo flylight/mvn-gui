@@ -1,10 +1,10 @@
 package org.ar.mvn.gui.state.dao;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.entity.Setting;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -59,9 +59,15 @@ public class HibernateManager implements IDataBaseStateManager {
   @Override
   public List<Project> loadProjects(){
     List<Project> projects = new ArrayList();
+    String query = null;
     try {
       openTransaction();
-      projects = session.createQuery("FROM Project").list();
+      if (ApplicationStateManager.INSTANCE().getSetting().isSortProjectsByName()) {
+        query = "FROM Project p ORDER BY p.name ASC";
+      } else {
+        query = "FROM Project p ORDER BY p.id ASC";
+      }
+      projects = session.createQuery(query).list();
     } catch (Exception e) {
       e.printStackTrace();
     } finally {

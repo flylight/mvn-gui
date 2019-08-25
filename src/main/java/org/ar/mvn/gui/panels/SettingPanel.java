@@ -7,9 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +25,7 @@ public class SettingPanel extends JPanel {
   private JTextField mavenHome;
   private JComboBox<String> localeComboBox;
   private String[] locales = {"EN", "TR"};
+  private JCheckBox projectSortCheckBox;
 
   public SettingPanel() {
     setBackground(Color.GRAY);
@@ -38,6 +38,8 @@ public class SettingPanel extends JPanel {
     ApplicationStateManager.INSTANCE().loadSetting();
     mavenHome.setText(ApplicationStateManager.INSTANCE().getSetting().getMavenHome());
     localeComboBox.setSelectedItem(ApplicationStateManager.INSTANCE().getSetting().getLocale());
+    projectSortCheckBox
+        .setSelected(ApplicationStateManager.INSTANCE().getSetting().isSortProjectsByName());
   }
 
   private void buildUI() {
@@ -77,6 +79,22 @@ public class SettingPanel extends JPanel {
         });
     settingPanel.add(selectMavenFolderBtn, c);
 
+    c.gridy = 1;
+    c.gridx = 0;
+    settingPanel.add(new JLabel(ContentUtil.getWord("SELECT_LANGUAGE")), c);
+
+    c.gridx = 1;
+    localeComboBox = new JComboBox<>(locales);
+    settingPanel.add(localeComboBox, c);
+
+    c.gridy = 2;
+    c.gridx = 0;
+    settingPanel.add(new JLabel(ContentUtil.getWord("SORT_PROJECTS_BY_NAME")), c);
+
+    c.gridx = 1;
+    projectSortCheckBox = new JCheckBox();
+    settingPanel.add(projectSortCheckBox, c);
+
     add(getControlPanel(), BorderLayout.CENTER);
     add(settingPanel, BorderLayout.NORTH);
   }
@@ -85,7 +103,7 @@ public class SettingPanel extends JPanel {
     JPanel control = new JPanel(new FlowLayout(FlowLayout.CENTER));
     control.setBackground(Color.GRAY);
 
-    localeComboBox = new JComboBox<>(locales);
+
     JButton save = new JButton(ContentUtil.getWord("SAVE"));
     save.addActionListener(
         e -> {
@@ -93,6 +111,7 @@ public class SettingPanel extends JPanel {
             Setting setting = new Setting();
             setting.setMavenHome(mavenHome.getText());
             setting.setLocale((String) localeComboBox.getSelectedItem());
+            setting.setSortProjectsByName(projectSortCheckBox.isSelected());
 
             if (ApplicationStateManager.INSTANCE().saveSetting(setting)) {
               DialogMessagesUtil.showInformationMessage(
@@ -103,7 +122,6 @@ public class SettingPanel extends JPanel {
             }
           }
         });
-    control.add(localeComboBox);
     control.add(save);
 
     return control;

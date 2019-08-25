@@ -10,6 +10,7 @@ public class Setting {
   @Id private int id;
   private String mavenHome = "";
   private String locale;
+  private boolean sortProjectsByName;
 
   public String getMavenHome() {
     return mavenHome;
@@ -25,5 +26,13 @@ public class Setting {
 
   public void setLocale(String locale) {
     this.locale = locale;
+  }
+
+  public boolean isSortProjectsByName() {
+    return sortProjectsByName;
+  }
+
+  public void setSortProjectsByName(boolean sortProjectsByName) {
+    this.sortProjectsByName = sortProjectsByName;
   }
 }
