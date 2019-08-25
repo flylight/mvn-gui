@@ -34,8 +34,6 @@ import org.ar.mvn.gui.utils.UpdateUI;
 
 public class ProjectPanel extends JPanel {
 
-  private static final long serialVersionUID = 1L;
-
   private static final String COMPILE_CMD = "compile";
   private static final String CLEAN_INSTALL_CMD = "clean install";
   private static final String INSTALL_CMD = "install";
@@ -70,11 +68,12 @@ public class ProjectPanel extends JPanel {
     JPanel body = new JPanel(new BorderLayout());
     body.add(buildActionPanel(), BorderLayout.NORTH);
     body.add(buildConsolePanel(), BorderLayout.CENTER);
-    body.add(buildCommandLinePnel(), BorderLayout.SOUTH);
+    body.add(buildCommandLinePanel(), BorderLayout.SOUTH);
     add(body, BorderLayout.CENTER);
   }
 
-  private JPanel buildCommandLinePnel() {
+  @SuppressWarnings("Convert2Lambda")
+  private JPanel buildCommandLinePanel() {
     JPanel commandLinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     commandLinePanel.setPreferredSize(new Dimension(0, 35));
     commandLinePanel.setBackground(Color.GRAY);
@@ -181,6 +180,7 @@ public class ProjectPanel extends JPanel {
     return console;
   }
 
+  @SuppressWarnings("Convert2Lambda")
   private JPanel buildActionPanel() {
     JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
     actionPanel.setBackground(Color.GRAY);

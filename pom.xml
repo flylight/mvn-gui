@@ -50,7 +50,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.ar.mvn.gui.ApplciationInitializer</mainClass>
+							<mainClass>org.ar.mvn.gui.ApplicationInitializer</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

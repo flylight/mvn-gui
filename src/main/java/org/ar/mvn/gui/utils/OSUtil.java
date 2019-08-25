@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import javax.swing.JFileChooser;
 import org.ar.mvn.gui.state.ApplicationStateManager;
 
@@ -19,11 +20,11 @@ public final class OSUtil {
   }
 
   public static boolean isWindows() {
-    return OPERATING_SYSTEM.indexOf("win") >= 0;
+    return OPERATING_SYSTEM.contains("win");
   }
 
   public static boolean isMac() {
-    return (OPERATING_SYSTEM.indexOf("mac") >= 0);
+    return OPERATING_SYSTEM.contains("mac");
   }
 
   public static void openInOSFileManager(String path) {
@@ -55,7 +56,8 @@ public final class OSUtil {
       else if (ApplicationStateManager.INSTANCE().getSetting().getLocale().equals("TR"))
         fileName += "_tr";
       InputStream inputStream = OSUtil.class.getClassLoader().getResourceAsStream(fileName);
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+          Objects.requireNonNull(inputStream)));
 
       String buffer;
       while ((buffer = bufferedReader.readLine()) != null) {

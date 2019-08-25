@@ -11,7 +11,7 @@ public class UpdateUI {
     SwingWorker<Boolean, Void> uiWorker =
         new SwingWorker<Boolean, Void>() {
           @Override
-          protected Boolean doInBackground() throws Exception {
+          protected Boolean doInBackground() {
             component.updateUI();
             return true;
           }

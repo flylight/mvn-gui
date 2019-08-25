@@ -15,14 +15,13 @@ public class HibernateManager implements IDataBaseStateManager {
   private SessionFactory sessionFactory = null;
   private Session session = null;
 
-  private SessionFactory configureSessionFactory() throws HibernateException {
+  private void configureSessionFactory() throws HibernateException {
     try {
       Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
       sessionFactory = configuration.buildSessionFactory();
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return sessionFactory;
   }
 
   public void openTransaction() {
@@ -44,7 +43,7 @@ public class HibernateManager implements IDataBaseStateManager {
   }
 
   @Override
-  public Setting loadSetting() throws SQLException {
+  public Setting loadSetting() {
     Setting setting = new Setting();
     try {
       openTransaction();
@@ -58,7 +57,7 @@ public class HibernateManager implements IDataBaseStateManager {
   }
 
   @Override
-  public List<Project> loadProjects() throws SQLException {
+  public List<Project> loadProjects(){
     List<Project> projects = new ArrayList();
     try {
       openTransaction();
@@ -72,7 +71,7 @@ public class HibernateManager implements IDataBaseStateManager {
   }
 
   @Override
-  public int saveSetting(Setting setting) throws SQLException {
+  public int saveSetting(Setting setting) {
     int result = 0;
     try {
       openTransaction();
@@ -89,7 +88,7 @@ public class HibernateManager implements IDataBaseStateManager {
   }
 
   @Override
-  public int saveProject(Project project) throws SQLException {
+  public int saveProject(Project project) {
     int result = 0;
     try {
       openTransaction();
@@ -106,7 +105,7 @@ public class HibernateManager implements IDataBaseStateManager {
   }
 
   @Override
-  public int deleteProject(int id) throws SQLException {
+  public int deleteProject(int id) {
     int result = 0;
     try {
       openTransaction();

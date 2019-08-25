@@ -21,7 +21,6 @@ import org.ar.mvn.gui.utils.OSUtil;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
 public class AddNewProjectWindow extends JDialog {
-  private static final long serialVersionUID = 1L;
 
   private JTextField projectPath;
   private JTextField projectName;
@@ -60,22 +59,19 @@ public class AddNewProjectWindow extends JDialog {
 
     JButton add = new JButton(ContentUtil.getWord("ADD"), Sources.ADD_SMALL_IMAGE);
     add.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            if (projectName.getText().isEmpty() || projectPath.getText().isEmpty()) {
-              DialogMessagesUtil.showErrorMessage(
-                  AddNewProjectWindow.this,
-                  ContentUtil.getWord("PROJECT_NAME_AND_PATH_CAN_NOT_BE_EMPTY"));
+        e -> {
+          if (projectName.getText().isEmpty() || projectPath.getText().isEmpty()) {
+            DialogMessagesUtil.showErrorMessage(
+                AddNewProjectWindow.this,
+                ContentUtil.getWord("PROJECT_NAME_AND_PATH_CAN_NOT_BE_EMPTY"));
+          } else {
+            if (VerificationUtil.isThisFolderContainsActiveMavenProject(projectPath.getText())) {
+              PanelSources.DESKTOP.addNewProject(projectName.getText(), projectPath.getText());
+              close();
             } else {
-              if (VerificationUtil.isThisFolderContainsActiveMavenProject(projectPath.getText())) {
-                PanelSources.DESKTOP.addNewProject(projectName.getText(), projectPath.getText());
-                close();
-              } else {
-                DialogMessagesUtil.showWarningMessage(
-                    AddNewProjectWindow.this,
-                    projectPath.getText() + ContentUtil.getWord("NOT_CONTAINS_MAVEN_PROJECT"));
-              }
+              DialogMessagesUtil.showWarningMessage(
+                  AddNewProjectWindow.this,
+                  projectPath.getText() + ContentUtil.getWord("NOT_CONTAINS_MAVEN_PROJECT"));
             }
           }
         });
@@ -130,12 +126,7 @@ public class AddNewProjectWindow extends JDialog {
     JButton selectPath = new JButton(ContentUtil.getWord("EXTRA"));
     selectPath.setPreferredSize(new Dimension(30, 15));
     selectPath.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            showPathChooser();
-          }
-        });
+        e -> showPathChooser());
     panel.add(selectPath, c);
 
     return panel;

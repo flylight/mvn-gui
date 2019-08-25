@@ -15,7 +15,7 @@ public class ApplicationStateManager {
   private IDataBaseStateManager dataBaseManager = new HibernateManager();
   private Setting setting = new Setting();
 
-  private List<Project> projects = new ArrayList<Project>();
+  private List<Project> projects = new ArrayList<>();
 
   private ApplicationStateManager() {}
 

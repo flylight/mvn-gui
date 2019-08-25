@@ -7,13 +7,13 @@ import org.ar.mvn.gui.entity.Setting;
 
 public interface IDataBaseStateManager {
 
-  Setting loadSetting() throws SQLException;
+  Setting loadSetting();
 
-  List<Project> loadProjects() throws SQLException;
+  List<Project> loadProjects();
 
-  int saveSetting(Setting s) throws SQLException;
+  int saveSetting(Setting s);
 
-  int saveProject(Project p) throws SQLException;
+  int saveProject(Project p);
 
-  int deleteProject(int id) throws SQLException;
+  int deleteProject(int id);
 }

@@ -16,46 +16,43 @@ public final class CommandExecutorUtil {
       final Project project, final String command, final ITaskExecutorListener listener) {
     Thread executor =
         new Thread(
-            new Runnable() {
-              @Override
-              public void run() {
-                UpdaterState updaterState = startConsoleUpdater(listener);
-                try {
-                  String maven = generateMavenLocation();
-                  Process process = null;
-                  if (OSUtil.isWindows()) {
-                    process =
-                        runtime.exec(
-                            "cmd.exe /c "
-                                + maven
-                                + " "
-                                + command
-                                + " -f "
-                                + project.getPath()
-                                + "/pom.xml");
-                  } else {
-                    process = runtime.exec(maven + " " + command + " -f " + project.getPath());
-                  }
+            () -> {
+              UpdaterState updaterState = startConsoleUpdater(listener);
+              try {
+                String maven = generateMavenLocation();
+                Process process = null;
+                if (OSUtil.isWindows()) {
+                  process =
+                      runtime.exec(
+                          "cmd.exe /c "
+                              + maven
+                              + " "
+                              + command
+                              + " -f "
+                              + project.getPath()
+                              + "/pom.xml");
+                } else {
+                  process = runtime.exec(maven + " " + command + " -f " + project.getPath());
+                }
 
-                  BufferedReader reader =
-                      new BufferedReader(new InputStreamReader(process.getInputStream()));
-                  String buffer = reader.readLine();
-                  while (buffer != null) {
-                    project.getConsoleLog().append(buffer);
-                    project.getConsoleLog().append("\n");
-                    buffer = reader.readLine();
-                  }
-                  process.waitFor();
-                  project.setStatus(Project.STATUS_AVAILABLE);
-                } catch (Exception e) {
-                  project.getConsoleLog().append(e.getMessage());
+                BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String buffer = reader.readLine();
+                while (buffer != null) {
+                  project.getConsoleLog().append(buffer);
                   project.getConsoleLog().append("\n");
-                  project.setStatus(Project.STATUS_ERROR);
+                  buffer = reader.readLine();
                 }
-                listener.executed();
-                if (updaterState.isWork()) {
-                  updaterState.setWork(false);
-                }
+                process.waitFor();
+                project.setStatus(Project.STATUS_AVAILABLE);
+              } catch (Exception e) {
+                project.getConsoleLog().append(e.getMessage());
+                project.getConsoleLog().append("\n");
+                project.setStatus(Project.STATUS_ERROR);
+              }
+              listener.executed();
+              if (updaterState.isWork()) {
+                updaterState.setWork(false);
               }
             });
     executor.start();
@@ -69,57 +66,54 @@ public final class CommandExecutorUtil {
       final IGenerateProjectExecutorListener listener) {
     Thread executor =
         new Thread(
-            new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  String maven = generateMavenLocation();
-                  Process process = null;
+            () -> {
+              try {
+                String maven = generateMavenLocation();
+                Process process = null;
 
-                  if (OSUtil.isWindows()) {
-                    process =
-                        runtime.exec(
-                            "cmd.exe /c "
-                                + maven
-                                + " archetype:generate -DgroupId="
-                                + group
-                                + " -DartifactId="
-                                + artifactory
-                                + " -DarchetypeArtifactId="
-                                + archetype
-                                + " -DinteractiveMode=false",
-                            null,
-                            new File(destination));
-                  } else {
-                    process =
-                        runtime.exec(
-                            maven
-                                + " archetype:generate -DgroupId="
-                                + group
-                                + " -DartifactId="
-                                + artifactory
-                                + " -DarchetypeArtifactId="
-                                + archetype
-                                + " -DinteractiveMode=false",
-                            null,
-                            new File(destination));
-                  }
-
-                  BufferedReader reader =
-                      new BufferedReader(new InputStreamReader(process.getInputStream()));
-                  String buffer = reader.readLine();
-                  while (buffer != null) {
-                    listener.updateConsole(buffer);
-                    listener.updateConsole("\n");
-                    buffer = reader.readLine();
-                  }
-                  process.waitFor();
-                } catch (Exception e) {
-                  listener.updateConsole(e.getMessage());
-                  listener.updateConsole("\n");
+                if (OSUtil.isWindows()) {
+                  process =
+                      runtime.exec(
+                          "cmd.exe /c "
+                              + maven
+                              + " archetype:generate -DgroupId="
+                              + group
+                              + " -DartifactId="
+                              + artifactory
+                              + " -DarchetypeArtifactId="
+                              + archetype
+                              + " -DinteractiveMode=false",
+                          null,
+                          new File(destination));
+                } else {
+                  process =
+                      runtime.exec(
+                          maven
+                              + " archetype:generate -DgroupId="
+                              + group
+                              + " -DartifactId="
+                              + artifactory
+                              + " -DarchetypeArtifactId="
+                              + archetype
+                              + " -DinteractiveMode=false",
+                          null,
+                          new File(destination));
                 }
-                listener.executed();
+
+                BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String buffer = reader.readLine();
+                while (buffer != null) {
+                  listener.updateConsole(buffer);
+                  listener.updateConsole("\n");
+                  buffer = reader.readLine();
+                }
+                process.waitFor();
+              } catch (Exception e) {
+                listener.updateConsole(e.getMessage());
+                listener.updateConsole("\n");
               }
+              listener.executed();
             });
     executor.start();
   }

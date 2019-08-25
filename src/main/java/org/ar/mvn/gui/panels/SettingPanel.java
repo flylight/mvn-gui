@@ -23,8 +23,6 @@ import org.ar.mvn.gui.utils.VerificationUtil;
 
 public class SettingPanel extends JPanel {
 
-  private static final long serialVersionUID = 1L;
-
   private JTextField mavenHome;
   private JComboBox<String> localeComboBox;
   private String[] locales = {"EN", "TR"};
@@ -68,16 +66,13 @@ public class SettingPanel extends JPanel {
     JButton selectMavenFolderBtn = new JButton(ContentUtil.getWord("EXTRA"));
     selectMavenFolderBtn.setPreferredSize(new Dimension(50, 20));
     selectMavenFolderBtn.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            String path =
-                OSUtil.showPathChooser(
-                    ContentUtil.getWord("SELECT_MAVEN_HOME_FOLDER"), SettingPanel.this);
-            if (!path.isEmpty()) {
-              mavenHome.setText(path);
-              mavenHome.requestFocus();
-            }
+        e -> {
+          String path =
+              OSUtil.showPathChooser(
+                  ContentUtil.getWord("SELECT_MAVEN_HOME_FOLDER"), SettingPanel.this);
+          if (!path.isEmpty()) {
+            mavenHome.setText(path);
+            mavenHome.requestFocus();
           }
         });
     settingPanel.add(selectMavenFolderBtn, c);
@@ -93,21 +88,18 @@ public class SettingPanel extends JPanel {
     localeComboBox = new JComboBox<>(locales);
     JButton save = new JButton(ContentUtil.getWord("SAVE"));
     save.addActionListener(
-        new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            if (checkMavenHomeFolder()) {
-              Setting setting = new Setting();
-              setting.setMavenHome(mavenHome.getText());
-              setting.setLocale((String) localeComboBox.getSelectedItem());
+        e -> {
+          if (checkMavenHomeFolder()) {
+            Setting setting = new Setting();
+            setting.setMavenHome(mavenHome.getText());
+            setting.setLocale((String) localeComboBox.getSelectedItem());
 
-              if (ApplicationStateManager.INSTANCE().saveSetting(setting)) {
-                DialogMessagesUtil.showInformationMessage(
-                    SettingPanel.this, ContentUtil.getWord("SETTING_SAVED"));
-              } else {
-                DialogMessagesUtil.showErrorMessage(
-                    SettingPanel.this, ContentUtil.getWord("ERROR_HAPPEN_WHEN_SAVE_SETTING"));
-              }
+            if (ApplicationStateManager.INSTANCE().saveSetting(setting)) {
+              DialogMessagesUtil.showInformationMessage(
+                  SettingPanel.this, ContentUtil.getWord("SETTING_SAVED"));
+            } else {
+              DialogMessagesUtil.showErrorMessage(
+                  SettingPanel.this, ContentUtil.getWord("ERROR_HAPPEN_WHEN_SAVE_SETTING"));
             }
           }
         });

@@ -16,7 +16,6 @@ import org.ar.mvn.gui.utils.UpdateUI;
 
 public class GeneralFrame extends JFrame {
 
-  private static final long serialVersionUID = 1L;
   private JPanel topPanel;
   private JPanel centerPanel;
   private JPanel bottomPanel;
@@ -82,17 +81,5 @@ public class GeneralFrame extends JFrame {
     centerPanel.removeAll();
     centerPanel.add(panel, BorderLayout.CENTER);
     UpdateUI.update(centerPanel);
-  }
-
-  public JPanel getTopPanel() {
-    return topPanel;
-  }
-
-  public JPanel getCenterPanel() {
-    return centerPanel;
-  }
-
-  public JPanel getBottomPanel() {
-    return bottomPanel;
   }
 }

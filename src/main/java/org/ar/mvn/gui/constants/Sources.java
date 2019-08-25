@@ -36,7 +36,7 @@ public interface Sources {
 
   ImageIcon FILES_IMAGE =
       new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/files.png"));
-  ImageIcon NEW_PROJ_IMAGE =
+  ImageIcon NEW_PROJE_IMAGE =
       new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/new.png"));
   ImageIcon SETTING_IMAGE =
       new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/setting.png"));

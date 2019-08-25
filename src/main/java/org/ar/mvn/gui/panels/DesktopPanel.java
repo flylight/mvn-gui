@@ -26,8 +26,6 @@ import org.ar.mvn.gui.utils.UpdateUI;
 
 public class DesktopPanel extends JPanel {
 
-  private static final long serialVersionUID = 1L;
-
   private JPanel projectTableDataPanel;
   private JPanel centerPanel;
 
@@ -122,7 +120,7 @@ public class DesktopPanel extends JPanel {
               } else {
                 // find selected and deselect
                 ApplicationStateManager.INSTANCE().getProjects().stream()
-                    .filter(e -> e.isSelected())
+                    .filter(Project::isSelected)
                     .forEach(e -> e.setSelected(false));
 
                 project.setSelected(true);

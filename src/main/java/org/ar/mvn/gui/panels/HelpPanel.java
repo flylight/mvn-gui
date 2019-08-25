@@ -10,7 +10,6 @@ import javax.swing.JTextArea;
 import org.ar.mvn.gui.utils.OSUtil;
 
 public class HelpPanel extends JPanel {
-  private static final long serialVersionUID = 1L;
 
   public HelpPanel() {
     setLayout(new BorderLayout());
@@ -27,7 +26,6 @@ public class HelpPanel extends JPanel {
     helpText.setEditable(false);
     helpText.setAutoscrolls(true);
 
-    JScrollPane scrollPane = new JScrollPane(helpText);
-    return scrollPane;
+    return new JScrollPane(helpText);
   }
 }
