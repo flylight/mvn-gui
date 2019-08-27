@@ -39,7 +39,7 @@ public class ProjectPanel extends JPanel {
   private static final String CLEAN_INSTALL_CMD = "clean install";
   private static final String INSTALL_CMD = "install";
   private static final String CLEAN_CMD = "clean";
-  private static final String DSKIP_TESTS = " -DskipTests";
+  private static final String DSKIP_TESTS = " -Dmaven.test.skip";
   private static final String COMMAND_PREFIX = "-> ";
   private static final String NEW_LINE = "\n";
 
