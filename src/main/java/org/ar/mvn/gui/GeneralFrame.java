@@ -24,6 +24,7 @@ public class GeneralFrame extends JFrame {
     setTitle("MVN GUI");
     setMinimumSize(new Dimension(800, 600));
     setLocationRelativeTo(null);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
     setIcon();
     initialize();
     addToCenter(PanelSources.DESKTOP);
