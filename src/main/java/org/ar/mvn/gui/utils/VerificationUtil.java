@@ -21,6 +21,9 @@ public final class VerificationUtil {
   }
 
   public static void checkProjectStatus(Project project) {
+	if(project == null){
+		return;
+	}
     if (isThisFolderContainsActiveMavenProject(project.getPath())) {
       project.setStatus(Project.STATUS_AVAILABLE);
     } else {
