@@ -1,6 +1,5 @@
 package org.ar.mvn.gui.state.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 import org.ar.mvn.gui.entity.Project;
 import org.ar.mvn.gui.entity.Setting;
