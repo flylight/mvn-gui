@@ -13,7 +13,7 @@ public final class ContentUtil {
   public static String getWord(String key) {
     Locale locale =
         Locale.forLanguageTag(ApplicationStateManager.INSTANCE().getSetting().getLocale());
-    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);;
+    ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
     return bundle.getString(key);
   }
 }
