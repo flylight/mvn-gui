@@ -4,22 +4,33 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Objects;
 import javax.swing.JFileChooser;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 
 public final class OSUtil {
 
+  private static final String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
+
   private OSUtil() {
     throw new UnsupportedOperationException();
+  }
+
+  public static boolean isWindows() {
+    return OPERATING_SYSTEM.contains("win");
+  }
+
+  public static boolean isMac() {
+    return OPERATING_SYSTEM.contains("mac");
   }
 
   public static void openInOSFileManager(String path) {
     try {
       Desktop.getDesktop().open(new File(path));
     } catch (IOException e) {
-      // TODO add logger
       e.printStackTrace();
     }
   }
@@ -30,7 +41,7 @@ public final class OSUtil {
     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     chooser.setAcceptAllFileFilterUsed(false);
     if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-      return VerificationUtil.nrmalizePath(chooser.getSelectedFile().getAbsolutePath());
+      return VerificationUtil.normalizePath(chooser.getSelectedFile().getAbsolutePath());
     }
     return "";
   }
@@ -39,18 +50,22 @@ public final class OSUtil {
 
     StringBuilder result = new StringBuilder();
     try {
-      BufferedReader reader =
-          new BufferedReader(new FileReader(new File(Thread.currentThread().getContextClassLoader()
-              .getResource("help").toURI())));
+      String fileName = "help";
+      if (ApplicationStateManager.INSTANCE().getSetting().getLocale().equals("EN"))
+        fileName += "_en";
+      else if (ApplicationStateManager.INSTANCE().getSetting().getLocale().equals("TR"))
+        fileName += "_tr";
+      InputStream inputStream = OSUtil.class.getClassLoader().getResourceAsStream(fileName);
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+          Objects.requireNonNull(inputStream)));
 
       String buffer;
-      while ((buffer = reader.readLine()) != null) {
+      while ((buffer = bufferedReader.readLine()) != null) {
         result.append(buffer);
         result.append("\n");
       }
-      reader.close();
+      bufferedReader.close();
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return result.toString();

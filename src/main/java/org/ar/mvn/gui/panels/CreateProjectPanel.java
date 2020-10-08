@@ -8,12 +8,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,35 +20,30 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultCaret;
-
-import org.ar.mvn.gui.constants.Text;
 import org.ar.mvn.gui.listeners.IGenerateProjectExecutorListener;
+import org.ar.mvn.gui.state.ApplicationStateManager;
 import org.ar.mvn.gui.utils.CommandExecutorUtil;
+import org.ar.mvn.gui.utils.ContentUtil;
 import org.ar.mvn.gui.utils.DialogMessagesUtil;
 import org.ar.mvn.gui.utils.OSUtil;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
 public class CreateProjectPanel extends JPanel {
 
-  private static final long serialVersionUID = 1L;
-  private JTextField projectPathField;
-  private JTextField arfitacIDField;
-  private JTextField groupIDField;
-
+  private JTextField projectPath;
+  private JTextField arfitactID;
+  private JTextField groupID;
   private JRadioButton custom;
-
-  private Map<JRadioButton, String> radioToArchetype = new HashMap<JRadioButton, String>();
-
+  private Map<JRadioButton, String> radioToArchetype = new HashMap<>();
   private JTextField otherArchetype;
 
   private JTextArea consoleView;
-
   private StringBuilder log = new StringBuilder();
 
   public CreateProjectPanel() {
     setBackground(Color.GRAY);
     setLayout(new BorderLayout());
-    add(perojectInfoPanel(), BorderLayout.NORTH);
+    add(projectInfoPanel(), BorderLayout.NORTH);
     add(consolePanel(), BorderLayout.CENTER);
     add(actionPanel(), BorderLayout.SOUTH);
   }
@@ -60,59 +52,56 @@ public class CreateProjectPanel extends JPanel {
     JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     actionPanel.setBackground(Color.GRAY);
 
-    final JButton generateProject = new JButton(Text.GENERATE);
+    final JButton generateProject = new JButton(ContentUtil.getWord("GENERATE"));
+    generateProject.addActionListener(
+        e -> {
+          if (projectPath.getText() != null
+              && !projectPath.getText().isEmpty()
+              && VerificationUtil.checkFolder(projectPath.getText())) {
+            if (groupID.getText() != null && !groupID.getText().isEmpty()) {
+              if (arfitactID.getText() != null && !arfitactID.getText().isEmpty()) {
+                if (!custom.isSelected()
+                    || (otherArchetype.getText() != null && !otherArchetype.getText().isEmpty())) {
+                  // disable button
+                  generateProject.setEnabled(false);
+                  // prepare console
+                  log = new StringBuilder(ContentUtil.getWord("EMPTY"));
+                  refreshConsole();
+                  // execute
+                  CommandExecutorUtil.executeGenerateProjectCommand(
+                      projectPath.getText(),
+                      groupID.getText(),
+                      arfitactID.getText(),
+                      getArchetype(),
+                      new IGenerateProjectExecutorListener() {
+                        @Override
+                        public void updateConsole(String msg) {
+                          log.append(msg);
+                          refreshConsole();
+                        }
 
-    generateProject.addActionListener(new ActionListener() {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (projectPathField.getText() != null && !projectPathField.getText().isEmpty()
-            && VerificationUtil.checkFolder(projectPathField.getText())) {
-          if (groupIDField.getText() != null && !groupIDField.getText().isEmpty()) {
-            if (arfitacIDField.getText() != null && !arfitacIDField.getText().isEmpty()) {
-              if (!custom.isSelected()
-                  || (otherArchetype.getText() != null && !otherArchetype.getText().isEmpty())) {
-                // disable button
-                generateProject.setEnabled(false);
-                // prepare console
-                log = new StringBuilder(Text.EMPTY);
-                refreshConsole();
-                // execute
-                CommandExecutorUtil.executeGenerateProjectCommand(projectPathField.getText(),
-                    groupIDField.getText(), arfitacIDField.getText(), getArchetype(),
-                    new IGenerateProjectExecutorListener() {
-                      @Override
-                      public void updateConsole(String msg) {
-                        log.append(msg);
-                        refreshConsole();
-                      }
-
-                      @Override
-                      public void executed() {
-                        generateProject.setEnabled(true);
-                      }
-                    });
+                        @Override
+                        public void executed() {
+                          generateProject.setEnabled(true);
+                        }
+                      });
+                } else {
+                  DialogMessagesUtil.showErrorMessage(
+                      CreateProjectPanel.this, ContentUtil.getWord("ARCHETYPE_CAN_NOT_BE_EMPTY"));
+                }
               } else {
-                DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                    Text.ARCHETYPE_CAN_NOT_BE_EMPTY);
+                DialogMessagesUtil.showErrorMessage(
+                    CreateProjectPanel.this, ContentUtil.getWord("ARTIFACT_ID_CAN_NOT_BE_EMPTY"));
               }
             } else {
-              //
-              DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                  Text.ARTIFACT_ID_CAN_NOT_BE_EMPTY);
+              DialogMessagesUtil.showErrorMessage(
+                  CreateProjectPanel.this, ContentUtil.getWord("GROUP_ID_CAN_NOT_BE_EMPTY"));
             }
           } else {
-            //
-            DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-                Text.GROUP_ID_CAN_NOT_BE_EMPTY);
+            DialogMessagesUtil.showErrorMessage(
+                CreateProjectPanel.this, ContentUtil.getWord("PROJECT_HOME_PATH_INCORRECT"));
           }
-        } else {
-          //
-          DialogMessagesUtil.showErrorMessage(CreateProjectPanel.this,
-              Text.PROJECT_HOME_PATH_INCORRECT);
-        }
-      }
-    });
+        });
 
     actionPanel.add(generateProject);
 
@@ -134,7 +123,12 @@ public class CreateProjectPanel extends JPanel {
 
   private JScrollPane consolePanel() {
     consoleView = new JTextArea();
-    //
+
+    consoleView.setFont(
+        new Font(
+            "arial",
+            Font.PLAIN,
+            ApplicationStateManager.INSTANCE().getSetting().getConsoleTextSize()));
     consoleView.setEditable(false);
     consoleView.setAutoscrolls(true);
     consoleView.setBackground(Color.BLACK);
@@ -144,11 +138,11 @@ public class CreateProjectPanel extends JPanel {
     caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
     refreshConsole();
-    //
+
     JScrollPane console = new JScrollPane(consoleView);
     console.setPreferredSize(new Dimension(600, 300));
     console.setBorder(BorderFactory.createMatteBorder(5, 10, 5, 10, Color.GRAY));
-    //
+
     return console;
   }
 
@@ -156,13 +150,11 @@ public class CreateProjectPanel extends JPanel {
     consoleView.setText(log.toString());
   }
 
-  private JPanel perojectInfoPanel() {
+  private JPanel projectInfoPanel() {
     JPanel configPanel = new JPanel(new BorderLayout());
-    //
 
     // project info panel
     JPanel projectInfoPanel = new JPanel(new GridBagLayout());
-
     projectInfoPanel.setBackground(Color.GRAY);
 
     GridBagConstraints c = new GridBagConstraints();
@@ -173,76 +165,73 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 0;
     c.gridx = 0;
 
-    JLabel projectInfoLanel = new JLabel(Text.PROJECT_INFO);
-    projectInfoLanel.setFont(new Font("arial", Font.BOLD, 15));
-    projectInfoLanel.setForeground(Color.WHITE);
+    JLabel projectInfoLabel = new JLabel(ContentUtil.getWord("PROJECT_INFO"));
+    projectInfoLabel.setFont(new Font("arial", Font.BOLD, 15));
+    projectInfoLabel.setForeground(Color.WHITE);
 
-    projectInfoPanel.add(projectInfoLanel, c);
+    projectInfoPanel.add(projectInfoLabel, c);
+
     // project path
-
     c.gridy = 1;
     c.gridx = 0;
 
-    JLabel projectPathLabel = new JLabel(Text.SELECT_FOLDER_FOR_NEW_PROJECT);
-    projectPathField = new JTextField();
-    JButton projectSelectPathBtn = new JButton(Text.EXTRA);
+    projectPath = new JTextField();
+    projectPath.setPreferredSize(new Dimension(500, 25));
 
+    JLabel projectPathLabel = new JLabel(ContentUtil.getWord("SELECT_FOLDER_FOR_NEW_PROJECT"));
     projectPathLabel.setPreferredSize(new Dimension(200, 25));
-    projectPathField.setPreferredSize(new Dimension(500, 25));
+
+    JButton projectSelectPathBtn = new JButton(ContentUtil.getWord("EXTRA"));
     projectSelectPathBtn.setPreferredSize(new Dimension(30, 25));
 
-    projectSelectPathBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        String path =
-            OSUtil.showPathChooser(Text.SELECT_PARENT_FOLDER_FOR_NEW_PROJECT,
-                CreateProjectPanel.this);
-        if (!path.isEmpty()) {
-          projectPathField.setText(path);
-          projectPathField.requestFocus();
-        }
-      }
-    });
+    projectSelectPathBtn.addActionListener(
+        e -> {
+          String path =
+              OSUtil.showPathChooser(
+                  ContentUtil.getWord("SELECT_PARENT_FOLDER_FOR_NEW_PROJECT"),
+                  CreateProjectPanel.this);
+          if (!path.isEmpty()) {
+            projectPath.setText(path);
+            projectPath.requestFocus();
+          }
+        });
 
     projectInfoPanel.add(projectPathLabel, c);
     c.gridx = 1;
-    projectInfoPanel.add(projectPathField, c);
+    projectInfoPanel.add(projectPath, c);
     c.gridx = 2;
     projectInfoPanel.add(projectSelectPathBtn, c);
 
     // project artifact
-
     c.gridy = 2;
     c.gridx = 0;
 
-    JLabel artifactIDLabel = new JLabel(Text.PROJECT_NAME_ARTIFACT_ID);
-    arfitacIDField = new JTextField();
-
-    arfitacIDField.setPreferredSize(new Dimension(500, 25));
-
+    JLabel artifactIDLabel = new JLabel(ContentUtil.getWord("PROJECT_NAME_ARTIFACT_ID"));
     projectInfoPanel.add(artifactIDLabel, c);
+
+    arfitactID = new JTextField();
+    arfitactID.setPreferredSize(new Dimension(500, 25));
     c.gridx = 1;
-    projectInfoPanel.add(arfitacIDField, c);
+    projectInfoPanel.add(arfitactID, c);
 
     // project packaging
-
     c.gridy = 3;
     c.gridx = 0;
 
-    JLabel groupIDLabel = new JLabel(Text.PACKAGE_PATH_GROUP_ID);
-    groupIDField = new JTextField();
-
-    groupIDField.setPreferredSize(new Dimension(500, 25));
-
+    JLabel groupIDLabel = new JLabel(ContentUtil.getWord("PACKAGE_PATH_GROUP_ID"));
     projectInfoPanel.add(groupIDLabel, c);
+
+    groupID = new JTextField();
+    groupID.setPreferredSize(new Dimension(500, 25));
+
     c.gridx = 1;
-    projectInfoPanel.add(groupIDField, c);
+    projectInfoPanel.add(groupID, c);
 
     // project generation archetype
     JPanel archetypePanel = new JPanel(new GridLayout(2, 1));
     archetypePanel.setBackground(Color.GRAY);
 
-    JLabel projectArchetypeLabel = new JLabel(Text.MAVEN_ARCHETYPE_ID);
+    JLabel projectArchetypeLabel = new JLabel(ContentUtil.getWord("MAVEN_ARCHETYPE_ID"));
     projectArchetypeLabel.setFont(new Font("arial", Font.BOLD, 15));
     projectArchetypeLabel.setForeground(Color.WHITE);
     projectArchetypeLabel.setBorder(BorderFactory.createMatteBorder(0, 26, 0, 0, Color.GRAY));
@@ -262,44 +251,34 @@ public class CreateProjectPanel extends JPanel {
     c.gridy = 0;
     c.gridx = 0;
 
+    final JRadioButton quickStartArchetype = new JRadioButton(ContentUtil.getWord("SIMPLE"));
+    final JRadioButton simpleWebJavaArchetype = new JRadioButton(ContentUtil.getWord("SIMPLE_WEB"));
 
-    final JRadioButton quickStartArchetype = new JRadioButton(Text.SIMPLE);
-    final JRadioButton simpleWebJavaArchetype = new JRadioButton(Text.SIMPLE_WEB);
     // add to map with archetype value
     radioToArchetype.put(quickStartArchetype, "maven-archetype-quickstart");
     radioToArchetype.put(simpleWebJavaArchetype, "maven-archetype-webapp");
-    //
-    custom = new JRadioButton(Text.OTHER);
 
+    custom = new JRadioButton(ContentUtil.getWord("OTHER"));
 
-    quickStartArchetype.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        simpleWebJavaArchetype.setSelected(false);
-        custom.setSelected(false);
-        //
-        otherArchetype.setEnabled(false);
-      }
-    });
-    simpleWebJavaArchetype.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        quickStartArchetype.setSelected(false);
-        custom.setSelected(false);
-        //
-        otherArchetype.setEnabled(false);
-      }
-    });
+    quickStartArchetype.addActionListener(
+        e -> {
+          simpleWebJavaArchetype.setSelected(false);
+          custom.setSelected(false);
+          otherArchetype.setEnabled(false);
+        });
+    simpleWebJavaArchetype.addActionListener(
+        e -> {
+          quickStartArchetype.setSelected(false);
+          custom.setSelected(false);
+          otherArchetype.setEnabled(false);
+        });
 
-    custom.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        quickStartArchetype.setSelected(false);
-        simpleWebJavaArchetype.setSelected(false);
-        //
-        otherArchetype.setEnabled(true);
-      }
-    });
+    custom.addActionListener(
+        e -> {
+          quickStartArchetype.setSelected(false);
+          simpleWebJavaArchetype.setSelected(false);
+          otherArchetype.setEnabled(true);
+        });
     c.gridy = 1;
     radioArchetypePanel.add(quickStartArchetype, c);
     c.gridx = 1;
@@ -308,20 +287,17 @@ public class CreateProjectPanel extends JPanel {
     radioArchetypePanel.add(custom, c);
 
     // Other archetype
-
     JPanel otherArchetypePanel = new JPanel(new FlowLayout());
     otherArchetypePanel.setBackground(Color.GRAY);
 
-    JLabel otherArchetypeLabel = new JLabel(Text.TYPE_YOUR_ARCHETYPE_ID);
-
+    JLabel otherArchetypeLabel = new JLabel(ContentUtil.getWord("TYPE_YOUR_ARCHETYPE_ID"));
 
     otherArchetype = new JTextField();
     otherArchetype.setEnabled(false);
     otherArchetype.setPreferredSize(new Dimension(600, 25));
-    //
+
     otherArchetypePanel.add(otherArchetypeLabel);
     otherArchetypePanel.add(otherArchetype);
-    //
 
     configPanel.add(archetypePanel, BorderLayout.CENTER);
     configPanel.add(projectInfoPanel, BorderLayout.NORTH);

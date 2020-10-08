@@ -4,6 +4,5 @@ public interface IGenerateProjectExecutorListener {
 
   void executed();
 
-  void updateConsole(String msg);
-
+  void updateConsole(String message);
 }

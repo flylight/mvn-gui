@@ -1,6 +1,7 @@
 package org.ar.mvn.gui.utils;
 
 public class UpdaterState {
+
   private boolean work;
 
   public boolean isWork() {

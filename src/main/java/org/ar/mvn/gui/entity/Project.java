@@ -1,23 +1,32 @@
 package org.ar.mvn.gui.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
+@Entity
 public class Project {
-  public static final int STATUS_AVAILABLE = 1;
-  public static final int STATUS_UNAVAILABLE = 0;
-  public static final int STATUS_BUSY = 2;
-  public static final int STATUS_ERROR = 3;
 
+  // temporary data
+  @Transient public static final int STATUS_UNAVAILABLE = 0;
+  @Transient public static final int STATUS_AVAILABLE = 1;
+  @Transient public static final int STATUS_BUSY = 2;
+  @Transient public static final int STATUS_ERROR = 3;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
   private String name;
   private String path;
+  @Transient private StringBuilder consoleLog = new StringBuilder();
+  @Transient private int status = 0;
+  @Transient private boolean isSelected;
 
-
-
-  // temporary data
-  private StringBuilder consoleLog = new StringBuilder();
-  private int status = 0;
-  private boolean isSelected;
+  public int getId() {
+    return id;
+  }
 
   public String getName() {
     return name;
@@ -25,6 +34,22 @@ public class Project {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = VerificationUtil.normalizePath(path);
+  }
+
+  public StringBuilder getConsoleLog() {
+    return consoleLog;
+  }
+
+  public void setConsoleLog(StringBuilder consoleLog) {
+    this.consoleLog = consoleLog;
   }
 
   public int getStatus() {
@@ -35,20 +60,12 @@ public class Project {
     this.status = status;
   }
 
-  public String getPath() {
-    return path;
+  public boolean isSelected() {
+    return isSelected;
   }
 
-  public void setPath(String path) {
-    this.path = VerificationUtil.nrmalizePath(path);
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
+  public void setSelected(boolean isSelected) {
+    this.isSelected = isSelected;
   }
 
   @Override
@@ -78,21 +95,4 @@ public class Project {
     if (status != other.status) return false;
     return true;
   }
-
-  public StringBuilder getConsoleLog() {
-    return consoleLog;
-  }
-
-  public void setConsoleLog(StringBuilder consoleLog) {
-    this.consoleLog = consoleLog;
-  }
-
-  public boolean isSelected() {
-    return isSelected;
-  }
-
-  public void setSelected(boolean isSelected) {
-    this.isSelected = isSelected;
-  }
-
 }

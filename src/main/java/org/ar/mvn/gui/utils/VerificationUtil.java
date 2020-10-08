@@ -1,7 +1,6 @@
 package org.ar.mvn.gui.utils;
 
 import java.io.File;
-
 import org.ar.mvn.gui.entity.Project;
 
 public final class VerificationUtil {
@@ -15,22 +14,24 @@ public final class VerificationUtil {
       File pom = new File(path, "pom.xml");
       return pom.exists();
     } catch (Exception e) {
-      // TODO logger
       // bad URL or file doesnt exist
       e.printStackTrace();
     }
     return false;
   }
 
-  public static void checkProjectStatus(Project p) {
-    if (isThisFolderContainsActiveMavenProject(p.getPath())) {
-      p.setStatus(Project.STATUS_AVAILABLE);
+  public static void checkProjectStatus(Project project) {
+	if(project == null){
+		return;
+	}
+    if (isThisFolderContainsActiveMavenProject(project.getPath())) {
+      project.setStatus(Project.STATUS_AVAILABLE);
     } else {
-      p.setStatus(Project.STATUS_UNAVAILABLE);
+      project.setStatus(Project.STATUS_UNAVAILABLE);
     }
   }
 
-  public static String nrmalizePath(String path) {
+  public static String normalizePath(String path) {
     if (path.endsWith("/") || path.endsWith("\\")) {
       return path.substring(0, path.length() - 1);
     }
@@ -42,7 +43,6 @@ public final class VerificationUtil {
       File mvn = new File(path + "/bin", "mvn");
       return mvn.exists();
     } catch (Exception e) {
-      // TODO logger
       e.printStackTrace();
     }
     return false;
@@ -53,7 +53,6 @@ public final class VerificationUtil {
       File folder = new File(path);
       return folder.exists() && folder.isDirectory();
     } catch (Exception e) {
-      // TODO logger
       e.printStackTrace();
     }
     return false;

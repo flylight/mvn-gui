@@ -1,21 +1,18 @@
 package org.ar.mvn.gui.state.dao;
 
-import java.sql.SQLException;
 import java.util.List;
-
 import org.ar.mvn.gui.entity.Project;
-import org.ar.mvn.gui.entity.Settings;
+import org.ar.mvn.gui.entity.Setting;
 
 public interface IDataBaseStateManager {
 
-  int deleteProject(int id) throws SQLException;
+  Setting loadSetting();
 
-  List<Project> loadProjects() throws SQLException;
+  List<Project> loadProjects();
 
-  int saveNewProject(Project p) throws SQLException;
+  int saveSetting(Setting s);
 
-  int saveSettings(Settings s) throws SQLException;
+  int saveProject(Project p);
 
-  Settings loadSettings() throws SQLException;
-
+  int deleteProject(int id);
 }

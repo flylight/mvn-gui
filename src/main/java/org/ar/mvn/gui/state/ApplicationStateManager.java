@@ -2,20 +2,20 @@ package org.ar.mvn.gui.state;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.ar.mvn.gui.entity.Project;
-import org.ar.mvn.gui.entity.Settings;
-import org.ar.mvn.gui.state.dao.DataBaseStateManager;
+import org.ar.mvn.gui.entity.Setting;
+import org.ar.mvn.gui.state.dao.HibernateManager;
 import org.ar.mvn.gui.state.dao.IDataBaseStateManager;
+import org.ar.mvn.gui.utils.ContentUtil;
 import org.ar.mvn.gui.utils.VerificationUtil;
 
 public class ApplicationStateManager {
 
   private static ApplicationStateManager instance;
-  private IDataBaseStateManager dataBaseManager = new DataBaseStateManager();
-  private Settings settings = new Settings();
+  private IDataBaseStateManager dataBaseManager = new HibernateManager();
+  private Setting setting = new Setting();
 
-  private List<Project> projectsList = new ArrayList<Project>();
+  private List<Project> projects = new ArrayList<>();
 
   private ApplicationStateManager() {}
 
@@ -30,68 +30,73 @@ public class ApplicationStateManager {
     return instance;
   }
 
-  public void addToProjectsList(Project p) {
+  public void addProject(Project project) {
     try {
-      dataBaseManager.saveNewProject(p);
-      projectsList.add(p);
+      dataBaseManager.saveProject(project);
+      projects.add(project);
     } catch (Exception e) {
-      // TODO add logger
       e.printStackTrace();
     }
   }
 
-  public void removeFromProjectList(Project p) {
+  public void removeProject(Project project) {
     try {
-      dataBaseManager.deleteProject(p.getId());
-      projectsList.remove(p);
+      dataBaseManager.deleteProject(project.getId());
+      projects.remove(project);
     } catch (Exception e) {
-      // TODO logger
       e.printStackTrace();
     }
   }
 
-  public void loadProjectList() {
+  public void loadProjects() {
     try {
-      projectsList.addAll(dataBaseManager.loadProjects());
+      projects.addAll(dataBaseManager.loadProjects());
     } catch (Exception e) {
-      // TODO add logging and message box
       e.printStackTrace();
     }
   }
 
-  public List<Project> getProjectsList() {
-    return projectsList;
+  public List<Project> getProjects() {
+    return projects;
   }
 
   public void checkProjectsStatuses() {
-    for (Project p : projectsList) {
-      VerificationUtil.checkProjectStatus(p);
+    for (Project project : projects) {
+      VerificationUtil.checkProjectStatus(project);
     }
   }
 
-  public void loadSettings() {
+  public void loadSetting() {
     try {
-      this.settings = dataBaseManager.loadSettings();
+      setting = dataBaseManager.loadSetting();
+      if (setting == null) createDummySetting();
     } catch (Exception e) {
-      // TODO add logger
       e.printStackTrace();
     }
   }
 
-  public boolean saveSettings(Settings s) {
+  public void createDummySetting() {
+    setting = new Setting();
+    setting.setLocale("EN");
+    setting.setMavenHome(ContentUtil.getWord("SELECT_MAVEN_PROJECT_FOLDER"));
+    setting.setSortProjectsByName(false);
+    setting.setConsoleTextSize(13);
+    saveSetting(setting);
+  }
+
+  public boolean saveSetting(Setting setting) {
     try {
-      if (dataBaseManager.saveSettings(s) == 1) {
-        this.settings = s;
+      if (dataBaseManager.saveSetting(setting) == 1) {
+        this.setting = setting;
         return true;
       }
     } catch (Exception e) {
-      // TODO add logger
       e.printStackTrace();
     }
     return false;
   }
 
-  public Settings getSettings() {
-    return settings;
+  public Setting getSetting() {
+    return setting;
   }
 }
